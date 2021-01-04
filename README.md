@@ -6,6 +6,7 @@ Projeto backend com integrações com redis + postgres
 > python3 -m venv venv (somente para o caso de não existir um virtual environment)
 > source env/bin/activate
 > pip install -r requirements.txt
+> python app.py | flask run --host=0.0.0.0 --port=3000
 ```
 ## Desativando o ambiente
 ```
