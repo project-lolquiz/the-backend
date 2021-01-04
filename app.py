@@ -7,7 +7,7 @@ app = Flask(__name__)
 @app.route('/ping')
 def ping():
     print("I'am online!!!")
-    return "pong"
+    return "pong", 200
 
 
 @app.errorhandler(404)
