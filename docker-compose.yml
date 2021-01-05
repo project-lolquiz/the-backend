@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  redis:
+    image: redis
+    command: redis-server --requirepass Acesso01!
+    ports:
+      - "6379:6379"
+
+# Conectar via docker
+# 1. Identificar o processo: docker ps
+# 2. Conectar via terminal na imagem: docker exec -it <ID_PROCESSO> bash
+# 3. Conectar no servidor: redis-cli
+# 4. Autenticar: auth <SENHA>
