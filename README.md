@@ -10,7 +10,7 @@ Projeto backend com integrações com redis + postgres
 ```
 ## Desativando o ambiente
 ```
-> source env/bin/deactivate
+> deactivate
 ```
 ## Atualizando as dependências do projeto
 ```
