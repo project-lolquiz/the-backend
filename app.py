@@ -1,5 +1,7 @@
 from flask import Flask
 
+from services.redis_client import get_all
+
 app = Flask(__name__)
 
 
@@ -8,6 +10,11 @@ app = Flask(__name__)
 def ping():
     print("I'am online!!!")
     return "pong", 200
+
+
+@app.route('/redis-get-all')
+def redis_get_all():
+    return get_all(), 200
 
 
 @app.errorhandler(404)
