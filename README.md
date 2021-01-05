@@ -17,3 +17,12 @@ Projeto backend com integrações com redis + postgres
 > python -m pip install <DEPENDENCIA>[==VERSION]
 > python -m pip freeze > requirements.txt
 ```
+## Iniciando/desativando serviços externos através do docker-compose
+```
+> docker-compose up | down
+```
+## Definindo variáveis de ambiente (para execução em ambiente local)
+```
+> export REDIS_PASSWORD=<VALOR>
+```
+
