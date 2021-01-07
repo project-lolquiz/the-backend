@@ -1,27 +1,17 @@
 from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
 
-from services.redis_client import get_all
+from configs.db_config import get_config
 
-app = Flask(__name__)
-
-
-@app.route('/')
-@app.route('/ping')
-def ping():
-    print("I'am online!!!")
-    return "pong", 200
+db = SQLAlchemy()
 
 
-@app.route('/redis-get-all')
-def redis_get_all():
-    return get_all(), 200
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(get_config())
+    db.init_app(app)
+    return app
 
 
-@app.errorhandler(404)
-def page_not_found(e):
-    print(e)
-    return "<strong>It seems this is not correct :-(</strong>", 404
-
-
-if __name__ == '__main__':
-    app.run()
+def get_db_connection():
+    return db
