@@ -12,3 +12,13 @@ services:
 # 2. Conectar via terminal na imagem: docker exec -it <ID_PROCESSO> bash
 # 3. Conectar no servidor: redis-cli
 # 4. Autenticar: auth <SENHA>
+
+  thedb:
+    image: postgres
+    environment:
+      - POSTGRES_DB=lolquiz
+      - POSTGRES_USER=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - TZ=GMT
+    ports:
+      - 5432:5432
