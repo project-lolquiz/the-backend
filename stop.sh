@@ -1,2 +1,2 @@
-# Running docker-compose
+# Stopping docker-compose
 docker-compose down
