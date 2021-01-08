@@ -1,0 +1,1 @@
+CREATE TABLE simple (id serial NOT NULL, name VARCHAR(250) NOT NULL, PRIMARY KEY (id));
