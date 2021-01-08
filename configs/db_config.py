@@ -17,7 +17,7 @@ class ProductionConfig(Config):
     pass
 
 
-def get_config():
+def get_connection():
     if os.environ.get('ENV') and os.environ.get('ENV') == 'dev':
         return DevelopmentConfig()
     return ProductionConfig()
