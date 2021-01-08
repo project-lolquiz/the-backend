@@ -2,6 +2,8 @@ from app import get_redis_connection
 
 _redis = get_redis_connection()
 
+def add():
+
 
 def get_all():
     _redis.set('full stack', 'python')
