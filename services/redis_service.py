@@ -3,6 +3,17 @@ from app import get_redis_connection
 _redis = get_redis_connection()
 
 
+def add(content):
+    expires_in = content['expires_in']
+    if expires_in is None:
+        expires_in = 10
+    _redis.set(content['key'], content['value'], expires_in)
+
+
+def get_by_key(key):
+    return _redis.get(key)
+
+
 def get_all():
     _redis.set('full stack', 'python')
     _redis.set('version', '3')
