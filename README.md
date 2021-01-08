@@ -32,4 +32,21 @@ O comando **. ./run.sh** irá:
 ```
 > export REDIS_PASSWORD=<VALOR>
 ```
-
+## Rotas
+### Para exemplos
+```
+http://localhost:5000/
+http://localhost:5000/ping
+```
+### Operações com Redis
+```
+/lolquiz/redis-add (POST) curl -v -XPOST -H "Content-type: application/json" -d '{"key": 2, "value": "A new value", "expires_in": 25}' 'http://localhost:5000/lolquiz/redis-add'
+/lolquiz/redis-get-by-key/<string:key> (GET) 
+/lolquiz/redis-get-all (GET)
+```
+### Operações com base de dados
+```
+/lolquiz/db-add (POST) curl -v -XPOST -H "Content-type: application/json" -d '{"value": "A new content"}' 'http://localhost:5000/lolquiz/db-add'
+/lolquiz/db-get-by-id/<int:by_id> (GET)
+/lolquiz/db-get-all (GET)
+```
