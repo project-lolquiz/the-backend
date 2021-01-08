@@ -1,12 +1,11 @@
-import redis
-import os
+from app import get_redis_connection
 
-r = redis.StrictRedis(password=os.environ['REDIS_PASSWORD'], charset="utf-8", decode_responses=True)
+_redis = get_redis_connection()
 
 
 def get_all():
-    r.set('full stack', 'python')
-    r.set('version', '3')
-    r.set('framework', 'flask')
-    keys = r.keys()
-    return {keys[index]: r.get(keys[index]) for index in range(0, len(keys))}
+    _redis.set('full stack', 'python')
+    _redis.set('version', '3')
+    _redis.set('framework', 'flask')
+    keys = _redis.keys()
+    return {keys[index]: _redis.get(keys[index]) for index in range(0, len(keys))}
