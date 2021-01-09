@@ -43,6 +43,8 @@ http://localhost:5000/ping
 /lolquiz/redis-add (POST) curl -v -XPOST -H "Content-type: application/json" -d '{"key": 2, "value": "A new value", "expires_in": 25}' 'http://localhost:5000/lolquiz/redis-add'
 /lolquiz/redis-get-by-key/<string:key> (GET) 
 /lolquiz/redis-get-all (GET)
+/lolquiz/redis-delete-all (DELETE) curl -XDELETE -H "Content-type: application/json" 'http://localhost:5000/lolquiz/redis-delete-all'
+/lolquiz/redis-delete-by-key/<string:key> (DELETE) curl -XDELETE -H "Content-type: application/json" 'http://localhost:5000/lolquiz/redis-delete-by-key/version'
 ```
 ### Operações com base de dados
 ```
