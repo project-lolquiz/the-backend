@@ -1,6 +1,6 @@
 from flask import jsonify, Blueprint, request
 
-from services.redis_service import get_all as from_redis, add as into_redis, get_by_key
+from services.redis_service import get_all as from_redis, add as into_redis, get_by_key, delete_all, delete_by_key
 from services.simple_service import get_all as from_db, add as into_db, get_by_id
 
 dumb_rest = Blueprint('dumb_rest', __name__)
@@ -21,6 +21,18 @@ def redis_get_by_key(key):
 @dumb_rest.route('/redis-get-all')
 def redis_get_all():
     return jsonify(from_redis()), 200
+
+
+@dumb_rest.route('/redis-delete-all', methods=['delete'])
+def redis_delete_all():
+    delete_all()
+    return '', 204
+
+
+@dumb_rest.route('/redis-delete-by-key/<string:key>', methods=['delete'])
+def redis_delete_by_key(key):
+    delete_by_key(key)
+    return '', 204
 
 
 @dumb_rest.route('/db-add', methods=['post'])
