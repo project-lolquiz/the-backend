@@ -20,7 +20,10 @@ class DevelopmentConfig(RedisConfig):
 
 
 class ProductionConfig(RedisConfig):
-    pass
+
+    def __init__(self):
+        super(ProductionConfig, self).__init__()
+        self.r = redis.from_url(os.environ.get('REDIS_URL'))
 
 
 def get_connection():
