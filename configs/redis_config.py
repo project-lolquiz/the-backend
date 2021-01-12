@@ -23,7 +23,7 @@ class ProductionConfig(RedisConfig):
 
     def __init__(self):
         super(ProductionConfig, self).__init__()
-        self.r = redis.from_url(os.environ.get('REDIS_URL'))
+        self.r = redis.from_url(os.environ.get('REDIS_URL'), decode_responses=True)
 
 
 def get_connection():
