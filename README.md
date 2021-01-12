@@ -52,3 +52,7 @@ http://localhost:5000/ping
 /lolquiz/db-get-by-id/<int:by_id> (GET)
 /lolquiz/db-get-all (GET)
 ```
+### Endereço no Heroku
+```
+https://lolquizbe.herokuapp.com/
+```
