@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import jsonify, Blueprint, request
 
 from services.user_service import *
@@ -41,4 +42,4 @@ def user_get(uid):
 
 
 def json_error_message(message):
-    return jsonify({'error': message})
+    return jsonify({'error': message, 'timestamp': str(datetime.now())})
