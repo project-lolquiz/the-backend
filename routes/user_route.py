@@ -1,7 +1,7 @@
-from datetime import datetime
 from flask import jsonify, Blueprint, request
 
 from services.user_service import *
+from routes.default_route import json_error_message
 
 user_rest = Blueprint('user_rest', __name__)
 
@@ -39,7 +39,3 @@ def user_get(uid):
         return jsonify(current_user), 200
     else:
         return json_error_message('User {} not found'.format(uid)), 404
-
-
-def json_error_message(message):
-    return jsonify({'error': message, 'timestamp': str(datetime.now())})
