@@ -59,6 +59,11 @@ http://localhost:5000/ping
 /lolquiz/users/<string:uid> (PUT) curl -v -XPUT -H "Content-type: application/json" -d '{"nickname":"johndoey","avatar":{"type":"2","current":"11"}}' 'http://localhost:5000/lolquiz/users/4b8c2cfe-e0f1-4e8b-b289-97f4591e2069'
 /lolquiz/users/<string:uid>/avatar (PUT) curl -v -XPUT -H "Content-type: application/json" -d '{"type":"3","current":"11"}' 'http://localhost:5000/lolquiz/users/4b8c2cfe-e0f1-4e8b-b289-97f4591e2069/avatar'
 ```
+### Operações API games
+```
+/lolquiz/games/types (GET) curl -v -XGET -H "Content-type: application/json" 'http://localhost:5000/lolquiz/games/types'
+/lolquiz/games/modes (GET) curl -v -XGET -H "Content-type: application/json" 'http://localhost:5000/lolquiz/games/modes'
+```
 ### Endereço no Heroku
 ```
 https://lolquizbe.herokuapp.com/
