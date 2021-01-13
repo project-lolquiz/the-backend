@@ -49,8 +49,20 @@ http://localhost:5000/ping
 ### Operações com base de dados
 ```
 /lolquiz/db-add (POST) curl -v -XPOST -H "Content-type: application/json" -d '{"value": "A new content"}' 'http://localhost:5000/lolquiz/db-add'
-/lolquiz/db-get-by-id/<int:by_id> (GET)
+/lolquiz/db-get-by-id/<int:by_id> (GET) 
 /lolquiz/db-get-all (GET)
+```
+### Operações API users
+```
+/lolquiz/users/register (POST) curl -v -XPOST -H "Content-type: application/json" -d '{"uid":"4b8c2cfe-e0f1-4e8b-b289-97f4591e2069","nickname":"john-doe","avatar":{"type":"1","current":"10"}}' 'http://localhost:5000/lolquiz/users/register'
+/lolquiz/users/<string:uid> (GET) curl -v -XGET -H "Content-type: application/json" 'http://localhost:5000/lolquiz/users/4b8c2cfe-e0f1-4e8b-b289-97f4591e2069'
+/lolquiz/users/<string:uid> (PUT) curl -v -XPUT -H "Content-type: application/json" -d '{"nickname":"johndoey","avatar":{"type":"2","current":"11"}}' 'http://localhost:5000/lolquiz/users/4b8c2cfe-e0f1-4e8b-b289-97f4591e2069'
+/lolquiz/users/<string:uid>/avatar (PUT) curl -v -XPUT -H "Content-type: application/json" -d '{"type":"3","current":"11"}' 'http://localhost:5000/lolquiz/users/4b8c2cfe-e0f1-4e8b-b289-97f4591e2069/avatar'
+```
+### Operações API games
+```
+/lolquiz/games/types (GET) curl -v -XGET -H "Content-type: application/json" 'http://localhost:5000/lolquiz/games/types'
+/lolquiz/games/modes (GET) curl -v -XGET -H "Content-type: application/json" 'http://localhost:5000/lolquiz/games/modes'
 ```
 ### Endereço no Heroku
 ```
