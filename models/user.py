@@ -5,17 +5,21 @@ from app import get_db_connection
 db = get_db_connection()
 
 
+def find_by_uid(uid):
+    return db.session.query(User).filter(User.uid == uid)
+
+
 def find_user_by_uid(uid):
-    return db.session.query(User).filter(User.uid == uid).first()
+    return find_by_uid(uid).first()
 
 
 def update(user):
-    db.session.query(User).filter(User.uid == user['uid']) \
+    find_by_uid(user['uid']) \
         .update({'nickname': user['nickname'],
                  'avatar_type': user['avatar']['type'],
                  'avatar_current_id': user['avatar']['current'],
-                 'updated_at': datetime.utcnow(),
-                 'last_access': datetime.utcnow()})
+                 'updated_at': datetime.now(),
+                 'last_access': datetime.now()})
     db.session.commit()
     db.session.flush()
 
@@ -36,9 +40,9 @@ class User(db.Model):
         self.nickname = nickname
         self.avatar_type = avatar_type
         self.avatar_current_id = avatar_current_id
-        self.created_at = db.func.now()
-        self.updated_at = db.func.now()
-        self.last_access = db.func.now()
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
+        self.last_access = datetime.now()
 
     def __repr__(self):
         return '<User id={}|uid={}|nickname={}>'.format(self.id, self.uid, self.nickname)
