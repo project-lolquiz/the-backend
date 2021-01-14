@@ -1,12 +1,15 @@
 from flask import jsonify, Blueprint, request
+from flask_expects_json import expects_json
 
 from services.user_service import *
 from routes.default_route import json_error_message
+from .schemas.user_schema import *
 
 user_rest = Blueprint('user_rest', __name__)
 
 
 @user_rest.route('/users/register', methods=['post'])
+@expects_json(post_schema)
 def user_register():
     try:
         return jsonify(add_user(request.get_json())), 201
@@ -15,6 +18,7 @@ def user_register():
 
 
 @user_rest.route('/users/<string:uid>', methods=['put'])
+@expects_json(put_schema)
 def user_update(uid):
     try:
         update_user(uid, request.get_json())
@@ -24,6 +28,7 @@ def user_update(uid):
 
 
 @user_rest.route('/users/<string:uid>/avatar', methods=['put'])
+@expects_json(put_avatar_schema)
 def user_avatar_update(uid):
     try:
         update_avatar(uid, request.get_json())
