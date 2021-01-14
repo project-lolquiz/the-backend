@@ -1,3 +1,6 @@
+from flask import make_response, jsonify
+from jsonschema import ValidationError
+
 from app import create_app
 from routes.default_route import default_rest
 from routes.dumb_route import dumb_rest
@@ -17,6 +20,14 @@ app.register_blueprint(user_rest, url_prefix=default_prefix)
 def http_not_found(e):
     print(e)
     return "<strong>It seems this is not correct :-(</strong>", 404
+
+
+@app.errorhandler(400)
+def bad_request(error):
+    if isinstance(error.description, ValidationError):
+        original_error = error.description
+        return make_response(jsonify({'error': original_error.message}), 400)
+    return error  # handle other "Bad Request"-errors
 
 
 if __name__ == '__main__':
