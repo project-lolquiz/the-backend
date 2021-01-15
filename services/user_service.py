@@ -11,7 +11,13 @@ def add_user(content):
     if user_from_db is not None:
         raise UserAlreadyExists('User {} already registered'.format(user['uid']))
 
-    new_user = User(user['uid'], user['nickname'], user['avatar']['type'], user['avatar']['current'])
+    avatar_type = None
+    avatar_current = None
+    if 'avatar' in user:
+        avatar_type = user['avatar']['type']
+        avatar_current = user['avatar']['current']
+
+    new_user = User(user['uid'], user['nickname'], avatar_type, avatar_current)
     new_user.add_new()
     return from_model_to_dict(new_user)
 
