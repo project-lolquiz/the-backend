@@ -1,0 +1,19 @@
+Get all game types
+---
+tags:
+  - Game API
+responses:
+    '200':
+      description: Successful operation
+      schema:
+        $ref: '#/definitions/GameTypeResponse'
+definitions:
+  GameTypeResponse:
+    type: object
+    properties:
+      id:
+        type: number
+      name:
+        type: string
+      description:
+        type: string

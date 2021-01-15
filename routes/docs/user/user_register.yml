@@ -1,0 +1,66 @@
+Add new user
+---
+tags:
+  - User API
+parameters:
+  - in: body
+    name: body
+    schema:
+        $ref: '#/definitions/User'
+    required: true
+responses:
+    '201':
+      description: Successful operation
+      schema:
+        $ref: '#/definitions/UserResponse'
+    '400':
+      description: Invalid inputs. Ex. User already exists
+      schema:
+        $ref: '#/definitions/ErrorResponse'
+definitions:
+    User:
+      type: object
+      required:
+        - uid
+        - nickname
+      properties:
+            uid:
+              type: string
+            nickname:
+              type: string
+            avatar:
+              $ref: '#/definitions/Avatar'
+    UserResponse:
+      type: object
+      properties:
+          id:
+            type: number
+          uid:
+            type: string
+          nickname:
+            type: string
+          avatar:
+            $ref: '#/definitions/Avatar'
+          created_at:
+            type: string
+          updated_at:
+            type: string
+          last_access:
+            type: string
+    Avatar:
+      type: object
+      required:
+        - type
+        - current
+      properties:
+            type:
+              type: string
+            current:
+              type: string
+    ErrorResponse:
+      type: object
+      properties:
+            error:
+              type: string
+            timestamp:
+              type: string

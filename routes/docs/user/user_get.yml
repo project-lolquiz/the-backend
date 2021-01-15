@@ -1,0 +1,53 @@
+Get user
+---
+tags:
+  - User API
+parameters:
+  - in: path
+    name: uid
+    type: string
+    required: true
+responses:
+    '200':
+      description: Successful operation
+      schema:
+        $ref: '#/definitions/UserResponse'
+    '404':
+      description: User not found
+      schema:
+        $ref: '#/definitions/ErrorResponse'
+definitions:
+  UserResponse:
+    type: object
+    properties:
+      id:
+        type: number
+      uid:
+        type: string
+      nickname:
+        type: string
+      avatar:
+        $ref: '#/definitions/Avatar'
+      created_at:
+        type: string
+      updated_at:
+        type: string
+      last_access:
+        type: string
+    Avatar:
+      type: object
+      required:
+        - type
+        - current
+      properties:
+            type:
+              type: string
+            current:
+              type: string
+    ErrorResponse:
+      type: object
+      properties:
+            error:
+              type: string
+            timestamp:
+              type: string
