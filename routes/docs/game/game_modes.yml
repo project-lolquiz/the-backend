@@ -1,0 +1,19 @@
+Get all game modes
+---
+tags:
+  - Game API
+responses:
+    '200':
+      description: Successful operation
+      schema:
+        $ref: '#/definitions/GameModeResponse'
+definitions:
+  GameModeResponse:
+    type: object
+    properties:
+      id:
+        type: number
+      name:
+        type: string
+      description:
+        type: string
