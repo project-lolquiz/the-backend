@@ -64,6 +64,10 @@ http://localhost:5000/ping
 /lolquiz/games/types (GET) curl -v -XGET -H "Content-type: application/json" 'http://localhost:5000/lolquiz/games/types'
 /lolquiz/games/modes (GET) curl -v -XGET -H "Content-type: application/json" 'http://localhost:5000/lolquiz/games/modes'
 ```
+### Swagger API
+```
+/apidocs/
+```
 ### Endereço no Heroku
 ```
 https://lolquizbe.herokuapp.com/
