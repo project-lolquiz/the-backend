@@ -1,0 +1,50 @@
+Update user
+---
+tags:
+  - User API
+parameters:
+  - in: path
+    name: uid
+    type: string
+    required: true
+  - in: body
+    name: body
+    schema:
+        $ref: '#/definitions/UserUpdate'
+    required: true
+responses:
+    '204':
+      description: Successful operation
+      content: ''
+    '400':
+      description: Invalid inputs. Ex. User not found
+      schema:
+        $ref: '#/definitions/ErrorResponse'
+definitions:
+    UserUpdate:
+      type: object
+      required:
+        - nickname
+        - avatar
+      properties:
+            nickname:
+              type: string
+            avatar:
+              $ref: '#/definitions/Avatar'
+    Avatar:
+      type: object
+      required:
+        - type
+        - current
+      properties:
+            type:
+              type: string
+            current:
+              type: string
+    ErrorResponse:
+      type: object
+      properties:
+            error:
+              type: string
+            timestamp:
+              type: string
