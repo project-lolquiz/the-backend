@@ -61,7 +61,6 @@ def test_redis_get_all(mock_redis_service, client):
     assert response.status_code == 200
 
     response_content = json.loads(response.get_data(as_text=True))
-    print(response_content)
     assert len(response_content) == 4
 
     for index in range(1, len(response_content) + 1):
