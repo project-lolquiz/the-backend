@@ -6,8 +6,8 @@ import pytest
 import main
 from main import default_prefix
 
-APPLICATION_JSON = "application/json"
-
+APPLICATION_JSON = 'application/json'
+TEXT_HTML_UTF8 = 'text/html; charset=utf-8'
 
 @pytest.fixture
 def client():
@@ -76,5 +76,14 @@ def test_redis_delete_all(mock_redis_service, client):
     response = client.delete(default_prefix + '/redis-delete-all')
     assert not response.data
     assert response.status_code == 204
-    assert response.content_type == 'text/html; charset=utf-8'
+    assert response.content_type == TEXT_HTML_UTF8
 
+
+@mock.patch('routes.dumb_route.delete_by_key')
+def test_redis_delete_by_key(mock_redis_service, client):
+    mock_redis_service.return_value = None
+
+    response = client.delete(default_prefix + '/redis-delete-by-key/a-key')
+    assert not response.data
+    assert response.status_code == 204
+    assert response.content_type == TEXT_HTML_UTF8
