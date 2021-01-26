@@ -47,3 +47,24 @@ def test_redis_add(mock_redis_service, client):
     assert response_content['key'] == 'the-key'
     assert response_content['value'] == 'the-value'
     assert response_content['expires_in'] == 10
+
+
+@mock.patch('routes.dumb_route.from_redis')
+def test_redis_get_all(mock_redis_service, client):
+    redis_content = [{'key' + str(index): 'value_' + str(index)} for index in range(1, 5)]
+
+    mock_redis_service.return_value = redis_content
+
+    response = client.get(default_prefix + '/redis-get-all')
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 200
+
+    response_content = json.loads(response.get_data(as_text=True))
+    print(response_content)
+    assert len(response_content) == 4
+
+    for index in range(1, len(response_content) + 1):
+        content = response_content[index - 1]
+        assert 'key' + str(index) in content
+        assert content['key' + str(index)] == 'value_' + str(index)
