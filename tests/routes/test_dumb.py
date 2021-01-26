@@ -67,3 +67,14 @@ def test_redis_get_all(mock_redis_service, client):
         content = response_content[index - 1]
         assert 'key' + str(index) in content
         assert content['key' + str(index)] == 'value_' + str(index)
+
+
+@mock.patch('routes.dumb_route.delete_all')
+def test_redis_delete_all(mock_redis_service, client):
+    mock_redis_service.return_value = None
+
+    response = client.delete(default_prefix + '/redis-delete-all')
+    assert not response.data
+    assert response.status_code == 204
+    assert response.content_type == 'text/html; charset=utf-8'
+
