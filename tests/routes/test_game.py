@@ -8,6 +8,7 @@ from main import default_prefix
 
 APPLICATION_JSON = 'application/json'
 
+
 @pytest.fixture
 def client():
     main.app.config['TESTING'] = True
