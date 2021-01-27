@@ -27,6 +27,9 @@ class ProductionConfig(RedisConfig):
 
 
 def get_connection():
-    if os.environ.get('ENV') and os.environ.get('ENV') == 'dev':
-        return DevelopmentConfig().get_connection()
+    if os.environ.get('ENV'):
+        if os.environ.get('ENV') == 'dev':
+            return DevelopmentConfig().get_connection()
+        elif os.environ.get('ENV') == 'qa':
+            return {}
     return ProductionConfig().get_connection()
