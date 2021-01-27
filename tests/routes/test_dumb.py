@@ -9,6 +9,7 @@ from main import default_prefix
 APPLICATION_JSON = 'application/json'
 TEXT_HTML_UTF8 = 'text/html; charset=utf-8'
 
+
 @pytest.fixture
 def client():
     main.app.config['TESTING'] = True
@@ -87,3 +88,20 @@ def test_redis_delete_by_key(mock_redis_service, client):
     assert not response.data
     assert response.status_code == 204
     assert response.content_type == TEXT_HTML_UTF8
+
+
+@mock.patch('routes.dumb_route.into_db')
+def test_db_add(mock_db_service, client):
+    mock_db_service.return_value = None
+
+    json_body = {'value': 'Adding new item'}
+    response = client.post(default_prefix + '/db-add',
+                           data=json.dumps(json_body),
+                           content_type=APPLICATION_JSON)
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 201
+
+    response_content = json.loads(response.get_data(as_text=True))
+    assert 'value' in response_content
+    assert response_content['value'] == 'Adding new item'
