@@ -1,5 +1,4 @@
 from unittest import mock
-import pytest
 
 from models.game import GameType, GameMode
 from services.game_service import get_all_types, get_all_modes
