@@ -4,7 +4,7 @@ from unittest import mock
 import pytest
 
 from models.user import User
-from services.user_service import add_user, update_user
+from services.user_service import add_user, update_user, update_avatar
 from components.exception_component import UserAlreadyExists, UserNotFound
 
 
@@ -76,12 +76,56 @@ def test_failure_update_user_with_not_found(mock_find_user_by_id):
         update_user(content['uid'], content)
 
 
+@mock.patch('services.user_service.db_update')
+@mock.patch('services.user_service.find_user_by_uid')
+def test_success_update_avatar(mock_find_user_by_id, mock_update_user):
+    mock_user = mock_user_registered()
+    registered_user_old = mock_db_user(mock_user)
+
+    new_avatar_type = '2'
+    new_avatar_current = '27'
+
+    user_registered = mock_db_user(mock_user_registered())
+    user_registered.avatar_type = new_avatar_type
+    user_registered.avatar_current_id = new_avatar_current
+
+    mock_find_user_by_id.side_effect = [registered_user_old, user_registered]
+    mock_update_user.return_value = user_registered
+
+    content = request_user_avatar_body()
+    uid = content['uid']
+    del content['uid']
+    content['type'] = new_avatar_type
+    content['current'] = new_avatar_current
+
+    response = update_avatar(uid, content)
+    assert_user_registered(response, user_registered)
+
+
+@mock.patch('services.user_service.find_user_by_uid')
+def test_failure_update_avatar_with_user_not_found(mock_find_user_by_id):
+    registered_user = mock_db_user(mock_user_registered())
+    mock_find_user_by_id.return_value = None
+
+    with pytest.raises(UserNotFound, match='User {} not found'.format(registered_user.uid)):
+        content = request_user_avatar_body()
+        uid = content['uid']
+        del content['uid']
+        update_user(uid, content)
+
+
 def request_user_body():
     return {'uid': '4b8c2cfe-e0f1-4e8b-b289-97f4591e2069',
             'nickname': 'john-doe',
             'avatar':
                 {'type': '1',
                  'current': '10'}}
+
+
+def request_user_avatar_body():
+    return {'uid': '4b8c2cfe-e0f1-4e8b-b289-97f4591e2069',
+            'type': '1',
+            'current': '10'}
 
 
 def mock_user_registered():
