@@ -6,6 +6,7 @@ from unittest import mock
 import pytest
 
 import main
+from components.exception_component import UserAlreadyExists
 from main import default_prefix
 
 APPLICATION_JSON = 'application/json'
@@ -36,20 +37,102 @@ def test_success_user_register(mock_db_service, client):
     assert_user_registered(response_content, json_body)
 
 
-def assert_user_registered(response_content, json_body):
+@mock.patch('routes.user_route.add_user')
+def test_success_user_register_without_avatar(mock_db_service, client):
+    user_registered = mock_user_registered()
+    del user_registered['avatar']
+    mock_db_service.return_value = user_registered
+
+    json_body = request_user_body()
+    response = client.post(default_prefix + '/users/register',
+                           data=json.dumps(json_body),
+                           content_type=APPLICATION_JSON)
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 201
+
+    response_content = json.loads(response.get_data(as_text=True))
+    assert_user_registered(response_content, json_body, False)
+
+
+@mock.patch('routes.user_route.add_user')
+def test_failure_user_register_with_already_exists(mock_db_service, client):
+    default_uid = '4b8c2cfe-e0f1-4e8b-b289-97f4591e2069'
+    error_message = 'User {} already registered'.format(default_uid)
+    mock_db_service.side_effect = UserAlreadyExists(error_message)
+
+    json_body = request_user_body()
+    response = client.post(default_prefix + '/users/register',
+                           data=json.dumps(json_body),
+                           content_type=APPLICATION_JSON)
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 400
+
+    response_content = json.loads(response.get_data(as_text=True))
+    assert_failure_user_register(response_content, error_message)
+
+
+def test_failure_user_register_with_required_missing_properties(client):
+    user_without_uid(client)
+    user_without_nickname(client)
+
+
+def user_without_uid(client):
+    json_body = request_user_body()
+    key_to_remove = 'uid'
+    del json_body[key_to_remove]
+    response = client.post(default_prefix + '/users/register',
+                           data=json.dumps(json_body),
+                           content_type=APPLICATION_JSON)
+    assert_failure_missing_property(response, key_to_remove)
+
+
+def user_without_nickname(client):
+    json_body = request_user_body()
+    key_to_remove = 'nickname'
+    del json_body[key_to_remove]
+    response = client.post(default_prefix + '/users/register',
+                           data=json.dumps(json_body),
+                           content_type=APPLICATION_JSON)
+    assert_failure_missing_property(response, key_to_remove)
+
+
+def assert_user_registered(response_content, json_body, avatar_validate=True):
     assert 'id' in response_content
     assert 'uid' in response_content
     assert 'nickname' in response_content
-    assert 'avatar' in response_content
-    assert 'type' in response_content['avatar']
-    assert 'current' in response_content['avatar']
     assert 'created_at' in response_content
     assert 'updated_at' in response_content
     assert 'last_access' in response_content
     assert response_content['uid'] == json_body['uid']
-    assert response_content['avatar']
-    assert response_content['avatar']['type']
-    assert response_content['avatar']['current']
+
+    if avatar_validate:
+        assert 'avatar' in response_content
+        assert 'type' in response_content['avatar']
+        assert 'current' in response_content['avatar']
+        assert response_content['avatar']
+        assert response_content['avatar']['type']
+        assert response_content['avatar']['current']
+    else:
+        assert 'avatar' not in response_content
+
+
+def assert_failure_user_register(response_content, error_message):
+    assert 'error' in response_content
+    assert 'timestamp' in  response_content
+    assert response_content['error'] == error_message
+
+
+def assert_failure_missing_property(response, missing_property):
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 400
+
+    response_content = json.loads(response.get_data(as_text=True))
+    assert 'error' in response_content
+    assert 'timestamp' not in response_content
+    assert response_content['error'] == '\'{}\' is a required property'.format(missing_property)
 
 
 def request_user_body():
