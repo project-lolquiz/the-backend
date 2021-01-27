@@ -108,17 +108,24 @@ def user_without_nickname(client, operation='POST'):
     assert_failure_missing_property(response, key_to_remove)
 
 
-def user_without_avatar_property(client, avatar_property='avatar'):
-    json_body = request_user_body()
+def user_without_avatar_property(client, avatar_property='avatar', full_body=True):
+    avatar_context = ''
+    if full_body:
+        json_body = request_user_body()
+    else:
+        json_body = request_user_avatar_body()
+        avatar_context = '/avatar'
 
     if avatar_property == 'avatar':
         del json_body[avatar_property]
-    else:
+    elif full_body:
         del json_body['avatar'][avatar_property]
+    else:
+        del json_body[avatar_property]
 
     uid = json_body['uid']
     del json_body['uid']
-    response = client.put(default_prefix + '/users/' + uid,
+    response = client.put(default_prefix + '/users/' + uid + avatar_context,
                           data=json.dumps(json_body),
                           content_type=APPLICATION_JSON)
 
@@ -168,6 +175,47 @@ def test_failure_user_update_with_required_missing_properties(client):
     user_without_avatar_property(client, 'current')
 
 
+@mock.patch('routes.user_route.update_avatar')
+def test_success_user_avatar_update(mock_db_service, client):
+    user_registered = mock_user_registered()
+    mock_db_service.return_value = user_registered
+
+    json_body = request_user_avatar_body()
+    uid = json_body['uid']
+    del json_body['uid']
+    response = client.put(default_prefix + '/users/' + uid + '/avatar',
+                          data=json.dumps(json_body),
+                          content_type=APPLICATION_JSON)
+    assert not response.data
+    assert response.content_type == TEXT_HTML_UTF8
+    assert response.status_code == 204
+
+
+@mock.patch('routes.user_route.update_avatar')
+def test_failure_user_avatar_update_with_not_found(mock_db_service, client):
+    default_uid = '4b8c2cfe-e0f1-4e8b-b289-97f4591e2069'
+    error_message = 'User {} not found'.format(default_uid)
+    mock_db_service.side_effect = UserNotFound(error_message)
+
+    json_body = request_user_avatar_body()
+    uid = json_body['uid']
+    del json_body['uid']
+    response = client.put(default_prefix + '/users/' + uid + '/avatar',
+                          data=json.dumps(json_body),
+                          content_type=APPLICATION_JSON)
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 404
+
+    response_content = json.loads(response.get_data(as_text=True))
+    assert_failure_user_register(response_content, error_message)
+
+
+def test_failure_user_avatar_update_with_required_missing_properties(client):
+    user_without_avatar_property(client, 'type', False)
+    user_without_avatar_property(client, 'current', False)
+
+
 def assert_user_registered(response_content, json_body, avatar_validate=True):
     assert 'id' in response_content
     assert 'uid' in response_content
@@ -211,6 +259,12 @@ def request_user_body():
             'avatar':
                 {'type': '1',
                  'current': '10'}}
+
+
+def request_user_avatar_body():
+    return {'uid': '4b8c2cfe-e0f1-4e8b-b289-97f4591e2069',
+            'type': '1',
+            'current': '10'}
 
 
 def mock_user_registered():
