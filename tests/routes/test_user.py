@@ -216,6 +216,35 @@ def test_failure_user_avatar_update_with_required_missing_properties(client):
     user_without_avatar_property(client, 'current', False)
 
 
+@mock.patch('routes.user_route.get_user_by_uid')
+def test_success_user_get(mock_db_service, client):
+    user_registered = mock_user_registered()
+    mock_db_service.return_value = user_registered
+
+    uid = user_registered['uid']
+    response = client.get(default_prefix + '/users/' + uid)
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 200
+
+    response_content = json.loads(response.get_data(as_text=True))
+    assert_user_registered(response_content, user_registered)
+
+
+@mock.patch('routes.user_route.get_user_by_uid')
+def test_failure_user_get_with_not_found(mock_db_service, client):
+    mock_db_service.return_value = None
+
+    uid = '4b8c2cfe-e0f1-4e8b-b289-97f4591e2069'
+    response = client.get(default_prefix + '/users/' + uid)
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 404
+
+    response_content = json.loads(response.get_data(as_text=True))
+    assert_failure_user_register(response_content, 'User {} not found'.format(uid))
+
+
 def assert_user_registered(response_content, json_body, avatar_validate=True):
     assert 'id' in response_content
     assert 'uid' in response_content
