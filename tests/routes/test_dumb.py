@@ -105,3 +105,21 @@ def test_db_add(mock_db_service, client):
     response_content = json.loads(response.get_data(as_text=True))
     assert 'value' in response_content
     assert response_content['value'] == 'Adding new item'
+
+
+@mock.patch('routes.dumb_route.get_by_id')
+def test_db_get_by_id(mock_db_service, client):
+    dict_db_value = {'id': 1, 'value': 'The new item'}
+    mock_db_service.return_value = dict_db_value
+
+    response = client.get(default_prefix + '/db-get-by-id/'
+                          + str(dict_db_value['id']))
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 200
+
+    response_content = json.loads(response.get_data(as_text=True))
+    assert 'id' in response_content
+    assert 'value' in response_content
+    assert response_content['id'] == dict_db_value['id']
+    assert response_content['value'] == dict_db_value['value']
