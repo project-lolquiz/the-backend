@@ -123,3 +123,26 @@ def test_db_get_by_id(mock_db_service, client):
     assert 'value' in response_content
     assert response_content['id'] == dict_db_value['id']
     assert response_content['value'] == dict_db_value['value']
+
+
+@mock.patch('routes.dumb_route.from_db')
+def test_db_get_all(mock_db_service, client):
+    list_db_value = [{'id': index, 'value': 'Item_' + str(index)}
+                     for index in range(1, 5)]
+    mock_db_service.return_value = list_db_value
+
+    response = client.get(default_prefix + '/db-get-all')
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 200
+
+    response_content = json.loads(response.get_data(as_text=True))
+    assert len(response_content) == len(list_db_value)
+
+    for index in range(0, len(list_db_value)):
+        content = response_content[index]
+        from_db = list_db_value[index]
+        assert 'id' in content
+        assert 'value' in content
+        assert content['id'] == from_db['id']
+        assert content['value'] == from_db['value']
