@@ -4,13 +4,13 @@ from unittest import mock
 import pytest
 
 from models.user import User
-from services.user_service import add_user
+from services.user_service import add_user, update_user
 from components.exception_component import UserAlreadyExists, UserNotFound
 
 
 @mock.patch('services.user_service.User.add_new')
 @mock.patch('services.user_service.find_user_by_uid')
-def test_add_user(mock_find_user_by_id, mock_add_new):
+def test_success_add_user(mock_find_user_by_id, mock_add_new):
     mock_find_user_by_id.return_value = None
 
     user_registered = mock_db_user(mock_user_registered())
@@ -44,6 +44,36 @@ def test_add_user_without_avatar(mock_find_user_by_id, mock_add_new):
     content = request_user_body()
     response = add_user(content)
     assert_user_registered(response, user_registered)
+
+
+@mock.patch('services.user_service.db_update')
+@mock.patch('services.user_service.find_user_by_uid')
+def test_success_update_user(mock_find_user_by_id, mock_update_user):
+    mock_user = mock_user_registered()
+    registered_user_old = mock_db_user(mock_user)
+
+    new_nickname = 'Nickname updated'
+
+    user_registered = mock_db_user(mock_user_registered())
+    user_registered.nickname = 'Nickname updated'
+
+    mock_find_user_by_id.side_effect = [registered_user_old, user_registered]
+    mock_update_user.return_value = user_registered
+
+    content = request_user_body()
+    content['nickname'] = new_nickname
+    response = update_user(content['uid'], content)
+    assert_user_registered(response, user_registered)
+
+
+@mock.patch('services.user_service.find_user_by_uid')
+def test_failure_update_user_with_not_found(mock_find_user_by_id):
+    registered_user = mock_db_user(mock_user_registered())
+    mock_find_user_by_id.return_value = None
+
+    with pytest.raises(UserNotFound, match='User {} not found'.format(registered_user.uid)):
+        content = request_user_body()
+        update_user(content['uid'], content)
 
 
 def request_user_body():
