@@ -4,7 +4,7 @@ from unittest import mock
 import pytest
 
 from models.user import User
-from services.user_service import add_user, update_user, update_avatar
+from services.user_service import add_user, update_user, update_avatar, get_user_by_uid
 from components.exception_component import UserAlreadyExists, UserNotFound
 
 
@@ -112,6 +112,25 @@ def test_failure_update_avatar_with_user_not_found(mock_find_user_by_id):
         uid = content['uid']
         del content['uid']
         update_user(uid, content)
+
+
+@mock.patch('services.user_service.find_user_by_uid')
+def test_success_get_user_by_uid(mock_find_user_by_id):
+    registered_user = mock_db_user(mock_user_registered())
+    mock_find_user_by_id.return_value = registered_user
+
+    uid = '4b8c2cfe-e0f1-4e8b-b289-97f4591e2069'
+    response = get_user_by_uid(uid)
+    assert_user_registered(response, registered_user)
+
+
+@mock.patch('services.user_service.find_user_by_uid')
+def test_success_get_user_by_uid(mock_find_user_by_id):
+    mock_find_user_by_id.return_value = None
+
+    uid = '4b8c2cfe-e0f1-4e8b-b289-97f4591e2069'
+    response = get_user_by_uid(uid)
+    assert response is None
 
 
 def request_user_body():
