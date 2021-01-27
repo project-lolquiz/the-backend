@@ -31,5 +31,6 @@ def get_connection():
         if os.environ.get('ENV') == 'dev':
             return DevelopmentConfig().get_connection()
         elif os.environ.get('ENV') == 'qa':
-            return {}
+            import fakeredis
+            return fakeredis.FakeStrictRedis(decode_responses=True)
     return ProductionConfig().get_connection()
