@@ -1,0 +1,24 @@
+# Linguagem Utilizada para Desenvolver a Aplicação
+language: python
+
+# Versão que a aplicação suporta.
+python:
+  - "3.9.1"
+
+# Faz a instalação com Sudo, para ter privilégio de Super Usuário.
+sudo: required
+
+# Instalação de Módulos que são necessários para a Aplicação.
+install:
+  - pip install -r requirements.txt
+
+# Define o script de Teste que deve rodar toda vez que o código for alterado.
+script:
+  - pytest -v
+
+# Define que o processo de Deploy será na Plataforma Heroku. É necessário informar o nome da APP criada no Heroku
+deploy:
+  provider: heroku
+  api-key:
+    secure: $SECURE_KEY
+  app: $APP_1

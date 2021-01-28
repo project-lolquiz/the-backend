@@ -1,4 +1,4 @@
-# the-backend
+# the-backend [![Build Status](https://travis-ci.com/project-lolquiz/the-backend.svg?branch=main)](https://travis-ci.com/project-lolquiz/the-backend)
 Projeto backend com integrações com redis + postgres
 
 ## Iniciando o ambiente
