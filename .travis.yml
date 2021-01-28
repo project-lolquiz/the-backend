@@ -1,6 +1,10 @@
 # Linguagem Utilizada para Desenvolver a Aplicação
 language: python
 
+branches:
+  only:
+  - feature/travis-ci
+
 # Versão que a aplicação suporta.
 python:
   - "3.9.1"
