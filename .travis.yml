@@ -22,3 +22,5 @@ deploy:
   api-key:
     secure: $SECURE_KEY
   app: $APP_1
+  on:
+    branch: main
