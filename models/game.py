@@ -15,6 +15,14 @@ class GameType(db.Model):
     created_at = db.Column(db.TIMESTAMP, nullable=False, default=db.func.now())
     updated_at = db.Column(db.TIMESTAMP, nullable=False, default=db.func.now())
 
+    def __init__(self):
+        pass
+
+    def __init__(self, _id, name, description):
+        self.id = _id
+        self.name = name
+        self.description = description
+
     def __repr__(self):
         return '<GameType id={}|name={}|description={}>'.format(self.id, self.name, self.description)
 
@@ -30,6 +38,14 @@ class GameMode(db.Model):
     description = db.Column(db.String, nullable=False)
     created_at = db.Column(db.TIMESTAMP, nullable=False, default=db.func.now())
     updated_at = db.Column(db.TIMESTAMP, nullable=False, default=db.func.now())
+
+    def __init__(self):
+        pass
+
+    def __init__(self, _id, name, description):
+        self.id = _id
+        self.name = name
+        self.description = description
 
     def __repr__(self):
         return '<GameMode id={}|name={}|description={}>'.format(self.id, self.name, self.description)

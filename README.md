@@ -24,6 +24,10 @@ O comando **. ./run.sh** irá:
 > python -m pip install <DEPENDENCIA>[==VERSION]
 > python -m pip freeze > requirements.txt
 ```
+## Executando os testes de unidade da aplicação
+```
+> pytest -v
+```
 ## Iniciando/desativando serviços externos através do docker-compose
 ```
 > docker-compose up | down

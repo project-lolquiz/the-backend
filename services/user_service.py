@@ -18,7 +18,7 @@ def add_user(content):
         avatar_current = user['avatar']['current']
 
     new_user = User(user['uid'], user['nickname'], avatar_type, avatar_current)
-    new_user.add_new()
+    new_user = new_user.add_new()
     return from_model_to_dict(new_user)
 
 
