@@ -21,8 +21,8 @@ script:
   - pytest -v
 
 # Define que o processo de Deploy será na Plataforma Heroku. É necessário informar o nome da APP criada no Heroku
-#deploy:
-#  provider: heroku
-#  api-key:
-#    secure: $HEROKU_API_KEY
-#  app: lolquiz
+deploy:
+  provider: heroku
+  api-key:
+    secure: $SECURE_KEY
+  app: $APP_1
