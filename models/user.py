@@ -6,7 +6,7 @@ db = get_db_connection()
 
 
 def find_by_uid(uid):
-    return db.session.query(User).filter(User.uid == uid)
+    return User.query.filter_by(uid=uid)
 
 
 def find_user_by_uid(uid):
@@ -50,3 +50,4 @@ class User(db.Model):
     def add_new(self):
         db.session.add(self)
         db.session.commit()
+        return self
