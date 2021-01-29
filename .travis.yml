@@ -13,4 +13,5 @@ deploy:
   app: the-backend
   on:
     repo: project-lolquiz/the-backend
+    branch: main
   skip_cleanup: 'true'
