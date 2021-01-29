@@ -8,8 +8,8 @@ script:
 - pytest -v
 deploy:
   provider: heroku
-  api_key: 29e43f7d-ecfc-4f8e-9009-4715de07334d
-  app: lolquizbe
+  api_key: $SECURE_API_KEY
+  app: $APP_1
   on:
     repo: project-lolquiz/the-backend
     branch: main
