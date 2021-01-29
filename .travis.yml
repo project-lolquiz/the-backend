@@ -9,7 +9,7 @@ script:
 deploy:
   provider: heroku
   api_key: 29e43f7d-ecfc-4f8e-9009-4715de07334d
-  app: the-backend
+  app: lolquizbe
   on:
     repo: project-lolquiz/the-backend
     branch: main
