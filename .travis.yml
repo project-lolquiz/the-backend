@@ -20,7 +20,7 @@ script:
 deploy:
   provider: heroku
   api-key:
-    secure: e77834bd-395e-4e77-8195-5065ec6127cf
-  app: $APP_1
+    secure: R7S9XaKiW8EEitnsvtfCxvu8VY2qilU11y830xImOSItuA+ZEDWvo5gcD/24a858z+/7hGtI+Y9x/hT11ULjSeWkPvqFAagWQLz15Iyja6EFZ5im7lojcvo2lKAzsLJFdaAvrqvB4ghOeWlVm3IFCT7h9bDK123a3YupJdOGr6NTUlDSbcM0n6Zn/WSS/VRDvL+9RCglSnsx5YranX7LqmcFgN3FPXa2sBZu3hn3TNcdq/edfHN3N6fVsjIwCGjzHZgMkc6xXlmkVW6R0+olBtxKHdr4V31Ysx4syuLjYG2GRYMDK/3dDmqQeOLYRhCyhyOXDn2TYdHjS7tfzDOGDg8XnrBL7bPA7Yok3IrLPtLTaRCVdiGAp1Wx1rZn21L61XvaY7RGVVywK2CsqkvBmjCgHYhz8cZLsrpW4QPtRLG4g3pC+WgJYA6qyvhLK6WgzuFcL57Y+MkF3FSesqvHtli5L+Uhi4V5NtmD71i+vgH5IqFm+tWOk6X7/u91pSKeEnq8d/+dYmBtMVJKftp4f2DZVcHgOogqp5EWtfEOmNC9iPvfXRauY+sUWC6myRf1P4L1kJdXEQOz9Fdo3wkn4i/qLTf5vdr7vBdiUw4LW+XUmmzHMChksEOhS17DvdSRCwW+ghvxlA1qiMUIK3PwhFHnnLFVcvcupgXJKc4NhLc=
+  app: lolquizbe
   on:
     branch: main
