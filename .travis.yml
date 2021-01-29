@@ -1,22 +1,11 @@
-# Linguagem Utilizada para Desenvolver a Aplicação
 language: python
-
-# Versão que a aplicação suporta.
 python:
-  - "3.9.1"
-
-# Faz a instalação com Sudo, para ter privilégio de Super Usuário.
+- 3.9.1
 sudo: required
-
-# Instalação de Módulos que são necessários para a Aplicação.
 install:
-  - pip install -r requirements.txt
-
-# Define o script de Teste que deve rodar toda vez que o código for alterado.
+- pip install -r requirements.txt
 script:
-  - pytest -v
-
-# Define que o processo de Deploy será na Plataforma Heroku. É necessário informar o nome da APP criada no Heroku
+- pytest -v
 deploy:
   provider: heroku
   api-key:
@@ -24,3 +13,6 @@ deploy:
   app: lolquizbe
   on:
     branch: main
+env:
+  global:
+    secure: aaXfolhEvDo7dHy21AyOcq+cOzHSg/8fGqrBZ42FZTUv9SKOpnqocEWNqqdcKRd2Z/ie+JmBJOkiJLGamGmh8vusIaCGgZorXe1AjUPiiCca6k2R3SGisQfubGq7gGAt6k8lxVYeZ1yb8p5xt7f1ASWtwYNogmZGu5y18rgWTY7dVioH85KKINAMhVCs/3Avj0PEf/G51HA5V27dbfud+Ld/iDawbidruA2zKUaBOdUFCnn3bUx3whUuxDlAE2mZNZQrBOZ65T6Qhnx0L8Z+zCUVp3ET/qt4EoiBTB1x/xHJ2EbTJ6Yivm7vi1Ov8iV/T80hIRtXuk96Gp6SzvsS2A1Kv/jzvU5t04k5fQP6TWvpWvCA5gO1f00vNR0XNAmPk42KQ6WFGgiqhOuUgr2ZeD0k03r+jNRxKklFVejgEGDUcRIBE84T2h1VvtGmpQm4PvaReBQ3ZL2tGBvrQiomgAm/aQCHETR3dRkLtY5WP9x0sZ5PqF6r70b0f5JbCr9Of0xnNpt0sP2pMc3piR2tQ7YMa//dI3z65wN9Lqk8JvYoQnpRqu04MYTPsjmbErdu9FjVID2j+DeZinSuqNlwlzuL7PajsdOMEDid0RS4XXCmdQanyTOpvHn36qlZroCBn3V8Tfhq4LrOyPRpSz0AVTvQxFOQjVrg6fKppxblRT0=
