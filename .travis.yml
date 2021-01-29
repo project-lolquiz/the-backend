@@ -20,7 +20,7 @@ script:
 deploy:
   provider: heroku
   api-key:
-    secure: $SECURE_KEY
+    secure: rt9c+rdMJ3iYQ8dCpcd4YPkwTLPWvhXREtP9MmvFa09j2cyqdE0AvZk/Rdvvq+T6DkJZK0GDWQtxEJxMLqj0QGou9yOlwUEj8bKYcVQF7jBDU9r7gzoX+y0fkW5SROtTfL9WroOQL3H6z1nbOpTuwS/gVvXnylTX/oeYOqbcRAj5DVilYTIh0q6IqFYgMXhCYHM4nRKaWM6a0MhY6XVJubhaOFm4WEGb7v2edWl6msHTHchrvyc5xyMHW/YJj75DQAXabwW9+HH/yLdDtt08+/V9VeTtODJkiCmnxfYAB4m/wuzSh9cVgj+0koEBhR2MhqAU/YnFX5UHMNx+OJSlhOXjz/gKFt0hr9zAtRT9V+FZAWXzJe+JpjLFS8K1Drtkl72G7iKq1olw2M0CwqX8FAqdz5F8X0ex31xJl440YHXHz0JBUNBoXZ9uOmfWAR+Y0rNNOhPB/supcwcHbUHJN7RBJn9LoNBZcVJL51mjq6BtoMW+YzGTalh1Uj9kc/PgqN52tWqKPz9D77dYCLx7PlkjzeWwD0xWKgblmqF1USST/Cd3KopL2ZiaONWc/rQjQaPXsObuC53ChajEvTCHUbNfBRhx0rkJcICHSHc1LeGFXlMznRaNQmarh7xArrnF0nX1sH4lWmsXyOjsgDBKPKqQG76CXwwM4putKcCLSco=
   app: $APP_1
   on:
     branch: main
