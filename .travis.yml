@@ -7,18 +7,19 @@ install:
 script:
 - pytest -v
 deploy:
-  - provider: heroku
-    api_key: $SECURE_API_KEY
-    app: $APP_1
-    on:
-      repo: project-lolquiz/the-backend
-      branch: main
-  - provider: heroku
-    api_key: $SECURE_API_KEY
-    app: $APP_2
-    on:
-      repo: project-lolquiz/the-backend
-      branch: main
+  provider: heroku
+  api_key: $SECURE_API_KEY
+  app: $APP_1
+  on:
+    repo: project-lolquiz/the-backend
+    branch: main
+
+  provider: heroku
+  api_key: $SECURE_API_KEY
+  app: $APP_2
+  on:
+    repo: project-lolquiz/the-backend
+    branch: main
   skip_cleanup: 'true'
 env:
   global:
