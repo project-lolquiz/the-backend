@@ -15,6 +15,7 @@ deploy:
       branch: main
     skip_cleanup: 'true'
   - provider: heroku
+    api_key: $SECURE_API_KEY
     app: $APP_2
     on:
       repo: project-lolquiz/the-backend
