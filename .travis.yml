@@ -13,14 +13,13 @@ deploy:
     on:
       repo: project-lolquiz/the-backend
       branch: main
-
+    skip_cleanup: 'true'
   - provider: heroku
     app: $APP_2
     on:
       repo: project-lolquiz/the-backend
       branch: main
-
-  skip_cleanup: 'true'
+    skip_cleanup: 'true'
 env:
   global:
     secure: LiPElvfIxj3Zq/JnGULYD4J25xDWv6d42byb9oLW3yrpflq1a9KHmsLnbu591EM1ys1Jq5taveDVH8GJkHudW3F70xuGbnFoOlBAfM4KtfVFZ5VbDs7Dew70uZrREcP7YAsPmFD6jX4MXKKnT6h7NLUhqimL6WC999ozh5D/RIp/xVhIuAHj7ZqKoi6BdRwGcM2m6dAWPKlD0Qs7WPLzMFhOP5vRzRUte6d1/4O4ibTbS/bBI2tjCUXwJ5kQ5GB1B0yb2hw7nEGBFV97CpEmkTh42HmR6UruYoM4GvyaJCki9xSWUQT6aUryh9PUQpMiTFFaziyIt3qt97W1UYrjuxE7l7ldwm/pqKD6pnf7ULvYtTPQgEesSIiP3DamHvZJ/jyVpo2c800pCiXOPmlnpHUYCP7jyIzVPMawZtWCHRbPbXGWH0fZ4CU/akHTMdheZaOpnEfFzGPXy7lD27rjOECnEtU34Lhq7+lTnZu5ZgVYox4gvwvAEPNvc5A3CRrr0fz54Gk+HFHsuA3U2BAnkBZOEH6GOJPnZeRm9+lGY/zsKWyLA+OZmL6aLxdPxkYF5YLyBpe5y6yE0zR5UsmUJytL5yuDKse31HnRdcJ2ifT01t1FNob1Py6R9KXrPLOKonLUV4xGfrmPuasF9EEpgkgpVnECMV5UBWgjsRtAk4A=
