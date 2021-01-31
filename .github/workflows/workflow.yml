@@ -23,9 +23,9 @@ jobs:
           python-version: '^3.9'
       - name: Print Python version
         run: python3 --version
-      - name: Test with pytest
+      - name: Install project dependencies
         run: |
-          pip install pytest
+          pip install -r requirements.txt
 
       # Run unit tests.
       - name: Run unit tests
