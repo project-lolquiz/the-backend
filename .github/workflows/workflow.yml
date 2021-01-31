@@ -23,6 +23,9 @@ jobs:
           python-version: '^3.9'
       - name: Print Python version
         run: python3 --version
+      - name: Test with pytest
+        run: |
+          pip install pytest
 
       # Run unit tests.
       - name: Run unit tests
