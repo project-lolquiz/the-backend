@@ -26,4 +26,4 @@ jobs:
 
       # Run unit tests.
       - name: Run unit tests
-        run: pytest -v
+        run: pytest -v ./...
