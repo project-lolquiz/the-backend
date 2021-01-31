@@ -26,7 +26,14 @@ jobs:
       - name: Install project dependencies
         run: |
           pip install -r requirements.txt
+      - name: Install coverage dependencies
+        run: |
+          pip install coverage
 
       # Run unit tests.
       - name: Run unit tests
-        run: pytest -v
+        #run: pytest -v
+        run: coverage run -m unittest
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v1 
