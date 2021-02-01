@@ -32,8 +32,6 @@ jobs:
 
       # Run unit tests.
       - name: Run unit tests
-        #run: pytest -v
-        #run: coverage run -m unittest
         run: coverage run -m pytest
 
       - name: Upload Coverage to Codecov
