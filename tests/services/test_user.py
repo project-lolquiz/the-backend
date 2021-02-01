@@ -204,5 +204,3 @@ def assert_user_registered(response_content, user_registered, avatar_validate=Tr
 
         assert 'current' in response_content['avatar']
         assert response_content['avatar']['current'] == user_registered.avatar_current_id
-    else:
-        assert 'avatar' not in response_content
