@@ -111,7 +111,7 @@ def test_failure_update_avatar_with_user_not_found(mock_find_user_by_id):
         content = request_user_avatar_body()
         uid = content['uid']
         del content['uid']
-        update_user(uid, content)
+        update_avatar(uid, content)
 
 
 @mock.patch('services.user_service.find_user_by_uid')
@@ -125,7 +125,7 @@ def test_success_get_user_by_uid(mock_find_user_by_id):
 
 
 @mock.patch('services.user_service.find_user_by_uid')
-def test_success_get_user_by_uid(mock_find_user_by_id):
+def test_failure_get_user_by_uid_with_not_found(mock_find_user_by_id):
     mock_find_user_by_id.return_value = None
 
     uid = '4b8c2cfe-e0f1-4e8b-b289-97f4591e2069'
