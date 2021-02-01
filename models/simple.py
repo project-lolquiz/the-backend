@@ -16,3 +16,4 @@ class Simple(db.Model):
     def add_new(self):
         db.session.add(self)
         db.session.commit()
+        return self
