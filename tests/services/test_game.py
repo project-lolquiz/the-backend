@@ -13,6 +13,13 @@ def test_get_all_types(mock_db_service):
     assert_response(all_types, types_from_db)
 
 
+@mock.patch('services.game_service.db_all_types')
+def test_failure_get_all_types_with_not_found(mock_db_service):
+    mock_db_service.return_value = []
+    all_types = get_all_types()
+    assert not all_types
+
+
 @mock.patch('services.game_service.db_all_modes')
 def test_get_all_modes(mock_db_service):
     modes_from_db = generate_mock_db_modes()
@@ -20,6 +27,13 @@ def test_get_all_modes(mock_db_service):
 
     all_modes = get_all_modes()
     assert_response(all_modes, modes_from_db)
+
+
+@mock.patch('services.game_service.db_all_modes')
+def test_failure_get_all_modes_with_not_found(mock_db_service):
+    mock_db_service.return_value = []
+    all_modes = get_all_modes()
+    assert not all_modes
 
 
 def generate_mock_db_types():
