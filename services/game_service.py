@@ -10,8 +10,6 @@ def get_all_modes():
 
 
 def from_model_to_dict(game):
-    if game is None:
-        return game
     return {'id': game.id,
             'name': game.name,
             'description': game.description}

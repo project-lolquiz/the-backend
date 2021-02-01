@@ -22,6 +22,21 @@ def test_add_and_get():
     assert json_dict['expires_in'] == json_body['expires_in']
 
 
+def test_add_without_expires_in_and_get():
+    json_body = {'key': 'the-key', 'value': 'the-value', 'expires_in': None}
+    add(json_body)
+
+    redis_content = get_by_key(json_body['key'])
+    json_dict = json.loads(redis_content)  # Convert from string to dict
+    assert json_dict
+    assert 'key' in json_dict
+    assert json_dict['key'] == json_body['key']
+    assert 'value' in redis_content
+    assert json_dict['value'] == json_body['value']
+    assert 'expires_in' in redis_content
+    assert json_dict['expires_in'] is None
+
+
 def test_get_all():
     redis_content = get_all()
     assert redis_content
