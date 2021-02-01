@@ -1,4 +1,6 @@
-# the-backend [![Build Status](https://travis-ci.com/project-lolquiz/the-backend.svg?branch=main)](https://travis-ci.com/project-lolquiz/the-backend) [![codecov](https://codecov.io/gh/project-lolquiz/the-backend/branch/main/graph/badge.svg?token=3K61M4E0LR)](https://codecov.io/gh/project-lolquiz/the-backend) ![main-worklfow](https://github.com/project-lolquiz/the-backend/workflows/main-worklfow/badge.svg)
+# the-backend 
+[![GitHub release](https://img.shields.io/github/release/project-lolquiz/the-backend.svg)](https://GitHub.com/project-lolquiz/the-backend/releases/) [![Build Status](https://travis-ci.com/project-lolquiz/the-backend.svg?branch=main)](https://travis-ci.com/project-lolquiz/the-backend) [![codecov](https://codecov.io/gh/project-lolquiz/the-backend/branch/main/graph/badge.svg?token=3K61M4E0LR)](https://codecov.io/gh/project-lolquiz/the-backend) ![main-worklfow](https://github.com/project-lolquiz/the-backend/workflows/main-worklfow/badge.svg)
+
 Projeto backend com integrações com redis + postgres
 
 ## Iniciando o ambiente
