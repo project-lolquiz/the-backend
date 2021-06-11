@@ -4,7 +4,20 @@ os.environ['ENV'] = 'qa'
 
 import json
 
-from services.redis_service import add, get_by_key, get_all, delete_by_key, delete_all
+from services.redis_service import add, get_by_key, get_all, delete_by_key, delete_all, set_content
+
+
+def test_set_content_and_get():
+    key = 'the-key'
+    json_body = {'value': 'the-value'}
+
+    set_content(key, json_body, 60)
+    redis_content = get_by_key(key)
+
+    json_dict = json.loads(redis_content)
+    assert json_dict
+    assert 'value' in json_dict
+    assert json_dict['value'] == json_body['value']
 
 
 def test_add_and_get():
