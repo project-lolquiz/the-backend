@@ -19,7 +19,7 @@ def test_success_check_exists_room_by_id():
     assert exists_room
 
 
-def test_fail_check_exists_room_by_id():
+def test_failure_check_exists_room_by_id():
     exists_room = exists_room_by_id("ABCD")
     assert exists_room is False
 
