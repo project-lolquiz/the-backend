@@ -53,7 +53,7 @@ def test_add_without_expires_in_and_get():
 def test_get_all():
     redis_content = get_all()
     assert redis_content
-    assert len(redis_content) == 4
+    assert len(redis_content) > 0
 
 
 def test_delete_by_key():
@@ -66,7 +66,7 @@ def test_delete_by_key():
 
 def test_delete_all():
     redis_current_keys = get_all().keys()
-    assert 0 < len(redis_current_keys) < 5
+    assert len(redis_current_keys) > 0
 
     delete_all()
     for key in redis_current_keys:
