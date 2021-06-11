@@ -1,0 +1,20 @@
+Check whether game room exists
+---
+tags:
+  - Game Room API
+parameters:
+  - in: path
+    name: room_id
+    type: string
+    required: true
+responses:
+    '200':
+      description: Successful operation
+      schema:
+        $ref: '#/definitions/ExistsRoomResponse'
+definitions:
+  ExistsRoomResponse:
+    type: object
+    properties:
+      exists:
+        type: boolean
