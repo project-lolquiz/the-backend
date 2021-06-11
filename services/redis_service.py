@@ -4,6 +4,13 @@ from app import get_redis_connection
 
 _redis = get_redis_connection()
 
+DEFAULT_EXPIRE_TIME_IN_SECONDS = 7200
+
+
+def set_content(key, content, expires_in=DEFAULT_EXPIRE_TIME_IN_SECONDS):
+    _json = json.dumps(content)
+    _redis.set(key, _json, expires_in)
+
 
 def add(content):
     expires_in = content['expires_in']
