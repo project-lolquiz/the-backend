@@ -2,7 +2,7 @@ import os
 
 os.environ['ENV'] = 'qa'
 
-from services.rooms.room_service import create_room
+from services.rooms.room_service import create_room, exists_room_by_id
 
 
 def test_success_create_room():
@@ -10,6 +10,18 @@ def test_success_create_room():
     room_id = create_room(room_body)
     assert room_id
     assert len(room_id) == 4
+
+
+def test_success_check_exists_room_by_id():
+    room_body = request_room_body()
+    room_id = create_room(room_body)
+    exists_room = exists_room_by_id(room_id)
+    assert exists_room
+
+
+def test_fail_check_exists_room_by_id():
+    exists_room = exists_room_by_id("ABCD")
+    assert exists_room is False
 
 
 def request_room_body():
