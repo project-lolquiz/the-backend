@@ -22,7 +22,7 @@ def test_game_types(mock_db_service, client):
     list_db_value = generate_mock_db_values()
     mock_db_service.return_value = list_db_value
 
-    response = client.get(default_prefix + '/games/types')
+    response = client.get(default_prefix + '/games/configs/types')
     assert_response(response, list_db_value)
 
 
@@ -31,7 +31,7 @@ def test_game_modes(mock_db_service, client):
     list_db_value = generate_mock_db_values()
     mock_db_service.return_value = list_db_value
 
-    response = client.get(default_prefix + '/games/modes')
+    response = client.get(default_prefix + '/games/configs/modes')
     assert_response(response, list_db_value)
 
 
