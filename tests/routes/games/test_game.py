@@ -55,6 +55,12 @@ def test_failure_create_game_room_with_room_not_found(client):
 
 
 def test_failure_create_game_room_with_required_missing_properties(client):
+    without_users(client)
+    with_users_empty(client)
+    without_nickname(client)
+
+
+def without_users(client):
     game_room_response = create_game_room(client, request_room_body())
 
     response_content = json.loads(game_room_response.get_data(as_text=True))
