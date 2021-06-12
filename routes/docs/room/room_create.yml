@@ -19,6 +19,7 @@ definitions:
       required:
         - game_type
         - game_mode
+        - host_user
         - total_rounds
       properties:
             game_type:
