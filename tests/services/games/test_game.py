@@ -37,4 +37,4 @@ def create_game_room():
 
 def request_start_game_body():
     return {'users': [{'uid': '8852c5af-a6e5-4fad-9022-3d10ed111a30', 'nickname': 'bet64'},
-                      {'uid': 'bbac28f0-5922-4935-9ca7-a313db5ba75a', 'name': 'avaii'}]}
+                      {'uid': 'bbac28f0-5922-4935-9ca7-a313db5ba75a', 'nickname': 'avaii'}]}
