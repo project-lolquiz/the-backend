@@ -1,0 +1,24 @@
+Get content
+---
+tags:
+  - Redis API
+parameters:
+  - in: path
+    name: key
+    type: string
+    required: true
+responses:
+    '200':
+      description: Successful operation
+    '404':
+      description: Key not exists
+      schema:
+        $ref: '#/definitions/ErrorResponse'
+definitions:
+    ErrorResponse:
+      type: object
+      properties:
+            error:
+              type: string
+            timestamp:
+              type: string
