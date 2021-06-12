@@ -3,11 +3,13 @@ start_game_schema = {
     'properties': {
         'users': {
             'type': 'array',
-            'properties': {
-                'uid': {'type': 'string'},
-                'nickname': {'type': 'string'}
-            },
-            'required': ['uid', 'nickname']
+            'items': {
+                'properties': {
+                    'uid': {'type': 'string'},
+                    'nickname': {'type': 'string'}
+                },
+                'required': ['uid', 'nickname']
+            }
         }
     },
     'required': ['users']
