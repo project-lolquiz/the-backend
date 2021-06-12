@@ -1,7 +1,7 @@
 Get all game types
 ---
 tags:
-  - Game API
+  - Game Config API
 responses:
     '200':
       description: Successful operation

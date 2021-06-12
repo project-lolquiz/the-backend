@@ -1,0 +1,47 @@
+Creates a new game room
+---
+tags:
+  - Game Room API
+parameters:
+  - in: body
+    name: body
+    schema:
+        $ref: '#/definitions/Room'
+    required: true
+responses:
+    '201':
+      description: Successful operation
+      schema:
+        $ref: '#/definitions/RoomResponse'
+definitions:
+    Room:
+      type: object
+      required:
+        - game_type
+        - game_mode
+        - host_user
+        - total_rounds
+      properties:
+            game_type:
+              type: number
+            game_mode:
+              type: number
+            host_user:
+              $ref: '#/definitions/HostUser'
+            total_rounds:
+              type: number
+    RoomResponse:
+      type: object
+      properties:
+          room_id:
+            type: string
+    HostUser:
+      type: object
+      required:
+        - uid
+        - nickname
+      properties:
+            uid:
+              type: string
+            nickname:
+              type: string

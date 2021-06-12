@@ -11,3 +11,7 @@ class UserAlreadyExists(AppException):
 
 class UserNotFound(AppException):
     pass
+
+
+class RoomNotFound(AppException):
+    pass

@@ -1,5 +1,9 @@
+import json
+
+from flasgger import swag_from
 from flask import jsonify, Blueprint, request
 
+from routes.default_route import json_error_message
 from services.redis_service import get_all as from_redis, add as into_redis, get_by_key, delete_all, delete_by_key
 from services.simple_service import get_all as from_db, add as into_db, get_by_id
 
@@ -13,9 +17,13 @@ def redis_add():
 
 
 @dumb_rest.route('/redis-get-by-key/<string:key>')
+@swag_from('./docs/redis/get_redis.yml')
 def redis_get_by_key(key):
-    content = get_by_key(key)
-    return {'key': key, 'value': content}, 200
+    try:
+        content = get_by_key(key)
+        return jsonify({'key': key, 'value': json.loads(content)}), 200
+    except Exception as _:
+        return json_error_message('Key {} not found'.format(key)), 404
 
 
 @dumb_rest.route('/redis-get-all')

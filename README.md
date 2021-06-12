@@ -29,6 +29,7 @@ O comando **. ./run.sh** irá:
 ## Executando os testes de unidade da aplicação
 ```
 > pytest -v
+> pytest -s tests/package/test_file.py::test_function_name
 ```
 ## Iniciando/desativando serviços externos através do docker-compose
 ```

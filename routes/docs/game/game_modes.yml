@@ -1,7 +1,7 @@
 Get all game modes
 ---
 tags:
-  - Game API
+  - Game Config API
 responses:
     '200':
       description: Successful operation
