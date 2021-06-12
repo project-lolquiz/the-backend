@@ -20,7 +20,7 @@ def client():
 
 @mock.patch('routes.dumb_route.get_by_key')
 def test_redis_get_by_key(mock_redis_service, client):
-    mock_redis_service.return_value = 'redis-value'
+    mock_redis_service.return_value = "{\"value\": \"redis-value\"}"
 
     response = client.get(default_prefix + '/redis-get-by-key/redis-key')
     assert response.data
@@ -29,7 +29,22 @@ def test_redis_get_by_key(mock_redis_service, client):
 
     response_content = json.loads(response.get_data(as_text=True))
     assert response_content['key'] == 'redis-key'
-    assert response_content['value'] == 'redis-value'
+    assert response_content['value']
+
+
+@mock.patch('routes.dumb_route.get_by_key')
+def test_failure_redis_get_by_key(mock_redis_service, client):
+    mock_redis_service.return_value = "key-value"
+
+    response = client.get(default_prefix + '/redis-get-by-key/redis-key')
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 404
+
+    response_content = json.loads(response.get_data(as_text=True))
+    assert response_content
+    assert response_content['error'] == 'Key redis-key not found'
+    assert response_content['timestamp']
 
 
 @mock.patch('routes.dumb_route.into_redis')
