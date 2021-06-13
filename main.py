@@ -11,7 +11,7 @@ from routes.games.game_route import game_rest
 
 default_prefix = '/lolquiz'
 
-app = create_app()
+app = create_app(default_prefix)
 app.register_blueprint(default_rest)
 app.register_blueprint(dumb_rest, url_prefix=default_prefix)
 app.register_blueprint(game_config_rest, url_prefix=default_prefix)
