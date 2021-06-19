@@ -31,6 +31,11 @@ O comando **. ./run.sh** irá:
 > pytest -v
 > pytest -s tests/package/test_file.py::test_function_name
 ```
+## Executando os testes de componentes (cucumber)
+```
+> aloe -v
+> aloe -v tests/features/file.feature
+```
 ## Iniciando/desativando serviços externos através do docker-compose
 ```
 > docker-compose up | down
