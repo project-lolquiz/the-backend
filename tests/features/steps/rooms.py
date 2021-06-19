@@ -28,7 +28,7 @@ def a_full_valid_input(self):
                           'total_rounds': 10}
 
 
-@step(r'I request to crate a new room')
+@step(r'I request to create a new room')
 def i_request_to_create_a_new_room(self):
     response = create_new_game_room()
     world.response_body = response
