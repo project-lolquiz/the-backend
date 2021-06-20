@@ -15,6 +15,7 @@ APPLICATION_JSON = 'application/json'
 @before.each_example
 def before_all(*args):
     world.client = main.app.test_client()
+    world.room_id = None
 
 
 @step(r'a full valid input for new room')
@@ -44,6 +45,31 @@ def i_should_get_a_new_room_code(self):
     response_content = json.loads(world.response_body.get_data(as_text=True))
     assert 'room_id' in response_content
     assert len(response_content['room_id']) == 4
+
+
+@step(r'a room code')
+def a_room_code(self):
+    a_full_valid_input(self)
+    i_request_to_create_a_new_room(self)
+    response_content = json.loads(world.response_body.get_data(as_text=True))
+    world.room_id = response_content['room_id']
+
+
+@step(r'a room with id "([^"]*)"')
+def a_room_with_id(self, room_code):
+    world.room_id = room_code
+
+
+@step(r'I request to check the existence of this room code')
+def i_request_to_check_existence_room_code(self):
+    world.response_body = world.client.get(default_prefix + '/games/rooms/{}'.format(world.room_id))
+
+
+@step(r'I should get the the exists response as "([^"]*)"')
+def i_request_to_check_existence_room_code(self, exists_room_code):
+    response_content = json.loads(world.response_body.get_data(as_text=True))
+    assert 'exists' in response_content
+    assert str(response_content['exists']) == exists_room_code
 
 
 def create_new_game_room():
