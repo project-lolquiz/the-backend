@@ -23,7 +23,7 @@ def client():
             yield client
 
 
-def test_success_create_game_room(client):
+def test_success_start_new_game(client):
     game_room_response = create_game_room(client, request_room_body())
 
     response_content = json.loads(game_room_response.get_data(as_text=True))
@@ -38,7 +38,7 @@ def test_success_create_game_room(client):
     assert response.status_code == 201
 
 
-def test_failure_create_game_room_with_room_not_found(client):
+def test_failure_start_new_game_with_room_not_found(client):
     room_id = 'DEFG'
     response = client.post(default_prefix + '/games/{}/start'.format(room_id),
                            data=json.dumps(request_start_game_body()),
@@ -54,7 +54,7 @@ def test_failure_create_game_room_with_room_not_found(client):
     assert response_content['error'] == 'Room ID {} not found'.format(room_id)
 
 
-def test_failure_create_game_room_with_required_missing_properties(client):
+def test_failure_start_new_game_with_required_missing_properties(client):
     without_users(client)
     with_users_empty(client)
     without_nickname(client)
