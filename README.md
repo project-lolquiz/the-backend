@@ -33,8 +33,8 @@ O comando **. ./run.sh** irá:
 ```
 ## Executando os testes de componentes (cucumber)
 ```
-> aloe -v
-> aloe -v tests/features/file.feature
+> behave tests/features
+> behave tests/features -n "nome do cenário específico"
 ```
 ## Iniciando/desativando serviços externos através do docker-compose
 ```
