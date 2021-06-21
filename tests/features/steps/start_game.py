@@ -26,6 +26,19 @@ def an_empty_response_body(context):
     assert context.world.response_body.get_data(as_text=True) == ""
 
 
+@step("an error response body")
+def an_error_response_body(context):
+    response_content = json.loads(context.world.response_body.get_data(as_text=True))
+    assert 'error' in response_content
+    assert 'timestamp' in response_content
+
+
+@step('an error message like "([^"]*)"')
+def an_error_response_body(context, error_message):
+    response_content = json.loads(context.world.response_body.get_data(as_text=True))
+    assert response_content['error'] == error_message
+
+
 def start_new_game(context):
     return context.world.client.post(default_prefix + '/games/{}/start'.format(context.world.room_id),
                                      data=json.dumps(context.world.request_body),
