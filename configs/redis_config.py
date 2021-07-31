@@ -1,6 +1,8 @@
 import redis
 import os
 
+from urllib.parse import urlparse
+
 
 class RedisConfig(object):
     r = None
@@ -23,7 +25,11 @@ class ProductionConfig(RedisConfig):
 
     def __init__(self):
         super(ProductionConfig, self).__init__()
-        self.r = redis.from_url(os.environ.get('REDIS_URL'), decode_responses=True)
+        url = urlparse(os.environ.get('REDIS_URL'))
+        self.r = redis.Redis(host=url.hostname, port=url.port, username=url.username, password=url.password,
+                             ssl=True,
+                             ssl_cert_reqs=None,
+                             decode_responses=True)
 
 
 def get_connection():
