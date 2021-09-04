@@ -18,6 +18,7 @@ def save_questions_on_redis():
 def get_all_questions():
     questions = get_by_key(ALL_QUESTIONS_KEY)
     if questions is None:
-        raise QuestionsNotFound("No questions were found")
+        save_questions_on_redis()
+        questions = get_by_key(ALL_QUESTIONS_KEY)
 
     return json.loads(questions)
