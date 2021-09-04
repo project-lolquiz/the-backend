@@ -25,7 +25,7 @@ def test_failure_save_questions_on_redis_with_questions_not_found(mock_get_quest
         save_questions_on_redis()
 
 
-def test_get_all_questions():
+def test_get_all_questions_when_already_in_redis():
     test_save_questions_on_redis()
     all_questions_as_json = get_all_questions()
     assert all_questions_as_json is not None
@@ -33,8 +33,19 @@ def test_get_all_questions():
 
 
 @mock.patch('services.cms_service.get_by_key')
-def test_failure_get_all_questions_with_questions_not_found(mock_get_by_key):
+def test_get_all_questions_when_not_already_in_redis(mock_get_by_key):
+    mock_get_by_key.side_effect = [None, '[{"id": 1, "title": "fake"}]']
+
+    all_questions_as_json = get_all_questions()
+    assert all_questions_as_json is not None
+    assert type(all_questions_as_json) != str
+
+
+@mock.patch('services.cms_service.get_questions')
+@mock.patch('services.cms_service.get_by_key')
+def test_failure_get_all_questions_with_questions_not_found(mock_get_by_key, mock_get_questions):
     mock_get_by_key.return_value = None
+    mock_get_questions.return_value = None
 
     with pytest.raises(QuestionsNotFound, match='No questions were found'):
         get_all_questions()
