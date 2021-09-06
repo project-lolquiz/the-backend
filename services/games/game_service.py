@@ -30,7 +30,7 @@ def get_game_question(room_id):
 
     random_user = select_random_user(room_id, current_room)
     random_question = select_random_question(room_id, current_room)
-    selected_question = set_question_options_with_user_ids(random_question, current_users)
+    selected_question = set_question_options_with_users(random_question, current_users)
 
     response = {'selected_user_id': random_user,
                 'title': selected_question['title'],
@@ -154,7 +154,7 @@ def all_questions_already_played(all_questions, selected_questions):
     return len(all_questions) == len(selected_questions)
 
 
-def set_question_options_with_user_ids(selected_question, current_users):
+def set_question_options_with_users(selected_question, current_users):
     if len(selected_question['options']) == 0:
         selected_question['options'] = [{'title': current_user['uid'],
                                          'description': current_user['nickname']}
