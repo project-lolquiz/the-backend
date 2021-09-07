@@ -4,6 +4,7 @@ import random
 from components.exception_component import RoomNotFound
 from services.cms_service import get_questions_by_game_type_and_game_mode
 from services.games.players.player_service import get_current_players
+from services.games.scores.score_service import is_draw_game_from_current_room
 from services.redis_service import set_content, get_by_key
 from services.rooms.room_service import exists_room_by_id
 
@@ -24,7 +25,7 @@ def get_game_question(room_id):
                 'title': selected_question['title'],
                 'options': selected_question['options'],
                 'round': current_round,
-                'draw': False}  # TODO: adicionar logica para identificar empate (de acordo com as respostas armazenadas)
+                'draw': is_draw_game_from_current_room(current_room)}
 
     current_room = json.loads(get_by_key(room_id))
     print("\ncurrent_room={}, round={}, selected_users={}, selected_questions={}".format(
