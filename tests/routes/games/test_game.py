@@ -7,12 +7,13 @@ import main
 import pytest
 
 from main import default_prefix
+from services.games.questions.answers.answer_service import set_answer
+from services.games.game_service import start_new_game
 from tests.services.games.test_game import request_start_game_body
 from tests.services.rooms.test_room import request_room_body, DEFAULT_SELECTED_USER_UID
 from tests.routes.rooms.test_room import create_game_room
 from tests.services.games.test_game import create_game_room as create_game_room_from_service
 from tests.services.games.questions.answers.test_answer import create_answer_body
-from services.games.game_service import start_new_game
 
 APPLICATION_JSON = 'application/json'
 TEXT_HTML_UTF8 = 'text/html; charset=utf-8'
@@ -123,6 +124,36 @@ def test_failure_set_answer_with_room_not_found(client):
 def test_failure_set_answer_with_required_missing_properties(client):
     without_selected_user_id(client)
     without_user_answer(client)
+
+
+def test_success_game_result_score(client):
+    room_id = create_game_room_from_service()
+    body = request_start_game_body()
+    start_new_game(body, room_id)
+    body = create_answer_body()
+    body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
+    set_answer(room_id, body)
+
+    response = client.get(default_prefix + '/games/{}/results/scores'.format(room_id),
+                          content_type=APPLICATION_JSON)
+    assert response is not None
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 200
+
+    response_content = json.loads(response.get_data(as_text=True))
+
+    assert 'users' in response_content
+    assert len(response_content['users']) > 0
+    assert 'winner' in response_content
+
+
+def test_failure_game_result_score_with_room_not_found(client):
+    room_id = 'AEFG'
+
+    response = client.get(default_prefix + '/games/{}/results/scores'.format(room_id),
+                          content_type=APPLICATION_JSON)
+    assert_room_not_found(response, room_id)
 
 
 def without_users(client):
