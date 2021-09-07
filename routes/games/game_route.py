@@ -6,6 +6,7 @@ from routes.default_route import json_error_message
 from services.games.game_service import *
 from services.games.questions.answers.answer_service import set_answer
 from services.games.questions.question_service import get_game_question
+from services.games.scores.score_service import get_result_score
 from ..schemas.game_schema import *
 from ..schemas.game_answer_schema import *
 
@@ -38,5 +39,14 @@ def game_question(room_id):
 def game_answer(room_id):
     try:
         return jsonify(set_answer(room_id, request.get_json())), 201
+    except RoomNotFound as rnf:
+        return json_error_message(rnf.message), 404
+
+
+@game_rest.route('/games/<string:room_id>/results/scores', methods=['get'])
+@swag_from('../docs/game/question/score/game_score.yml')
+def game_result_score(room_id):
+    try:
+        return jsonify(get_result_score(room_id)), 200
     except RoomNotFound as rnf:
         return json_error_message(rnf.message), 404
