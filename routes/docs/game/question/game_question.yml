@@ -1,0 +1,46 @@
+Get a game question
+---
+tags:
+  - Game API
+parameters:
+  - in: path
+    name: room_id
+    type: string
+    required: true
+responses:
+    '200':
+      description: Successful operation
+      schema:
+        $ref: '#/definitions/GameQuestionResponse'
+    '404':
+      description: Room not found
+      schema:
+        $ref: '#/definitions/ErrorResponse'
+definitions:
+  GameQuestionResponse:
+    type: object
+    properties:
+      selected_user_id:
+        type: string
+      title:
+        type: string
+      options:
+        type: array
+        items:
+            $ref: '#/definitions/Option'
+      round:
+        type: object
+        properties:
+          current:
+            type: integer
+          total:
+            type: integer
+      draw:
+        type: boolean
+  Option:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
