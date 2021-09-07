@@ -32,7 +32,7 @@ definitions:
     properties:
       uid:
         type: string
-      nickanme:
+      nickname:
         type: string
       total_score:
         type: number
