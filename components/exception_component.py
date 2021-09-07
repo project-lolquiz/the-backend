@@ -15,3 +15,7 @@ class UserNotFound(AppException):
 
 class RoomNotFound(AppException):
     pass
+
+
+class QuestionsNotFound(AppException):
+    pass
