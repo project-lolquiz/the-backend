@@ -5,6 +5,7 @@ os.environ['ENV'] = 'qa'
 from services.rooms.room_service import create_room, exists_room_by_id, generate_room_id
 
 DEFAULT_TOTAL_ROUNDS = 10
+DEFAULT_SELECTED_USER_UID = '4b8c2cfe-e0f1-4e8b-b289-97f4591e2069'
 
 
 def test_success_create_room():
@@ -36,7 +37,7 @@ def request_room_body():
     return {'game_type': 2,
             'game_mode': 1,
             'host_user': {
-                'uid': '4b8c2cfe-e0f1-4e8b-b289-97f4591e2069',
+                'uid': DEFAULT_SELECTED_USER_UID,
                 'nickname': 'john-doe'
             },
             'total_rounds': DEFAULT_TOTAL_ROUNDS}
