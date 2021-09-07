@@ -10,6 +10,8 @@ from main import default_prefix
 from tests.services.games.test_game import request_start_game_body
 from tests.services.rooms.test_room import request_room_body
 from tests.routes.rooms.test_room import create_game_room
+from tests.services.games.test_game import create_game_room as create_game_room_from_service
+from services.games.game_service import start_new_game
 
 APPLICATION_JSON = 'application/json'
 TEXT_HTML_UTF8 = 'text/html; charset=utf-8'
@@ -43,21 +45,43 @@ def test_failure_start_new_game_with_room_not_found(client):
     response = client.post(default_prefix + '/games/{}/start'.format(room_id),
                            data=json.dumps(request_start_game_body()),
                            content_type=APPLICATION_JSON)
-
-    assert response
-    assert response.content_type == APPLICATION_JSON
-    assert response.status_code == 404
-
-    response_content = json.loads(response.get_data(as_text=True))
-    assert 'error' in response_content
-    assert 'timestamp' in response_content
-    assert response_content['error'] == 'Room ID {} not found'.format(room_id)
+    assert_room_not_found(response, room_id)
 
 
 def test_failure_start_new_game_with_required_missing_properties(client):
     without_users(client)
     with_users_empty(client)
     without_nickname(client)
+
+
+def test_success_get_game_question(client):
+    room_id = create_game_room_from_service()
+    body = request_start_game_body()
+    start_new_game(body, room_id)
+
+    response = client.get(default_prefix + '/games/{}/questions'.format(room_id),
+                          content_type=APPLICATION_JSON)
+    assert response is not None
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 200
+
+    response_content = json.loads(response.get_data(as_text=True))
+
+    assert 'title' in response_content
+    assert 'options' in response_content
+    assert len(response_content['options']) > 0
+    assert 'round' in response_content
+    assert 'selected_user_id' in response_content
+    assert 'draw' in response_content
+
+
+def test_failure_get_game_question_with_room_not_found(client):
+    room_id = 'DEFG'
+
+    response = client.get(default_prefix + '/games/{}/questions'.format(room_id),
+                          content_type=APPLICATION_JSON)
+    assert_room_not_found(response, room_id)
 
 
 def without_users(client):
@@ -116,3 +140,14 @@ def assert_failure_missing_property(response, missing_property):
     assert 'error' in response_content
     assert 'timestamp' not in response_content
     assert response_content['error'] == '\'{}\' is a required property'.format(missing_property)
+
+
+def assert_room_not_found(response, room_id):
+    assert response
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 404
+
+    response_content = json.loads(response.get_data(as_text=True))
+    assert 'error' in response_content
+    assert 'timestamp' in response_content
+    assert response_content['error'] == 'Room ID {} not found'.format(room_id)
