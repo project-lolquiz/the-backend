@@ -36,6 +36,7 @@ def i_request_to_start_a_new_game_with_users(context):
     start_new_game(context)
 
 
+@step("I request a new question")
 @when("I request a new question")
 def i_request_a_new_question(context):
     context.world.response_body = get_question(context)
