@@ -3,6 +3,7 @@ import random
 
 from components.exception_component import RoomNotFound
 from services.cms_service import get_questions_by_game_type_and_game_mode
+from services.games.players.player_service import get_current_players
 from services.redis_service import set_content, get_by_key
 from services.rooms.room_service import exists_room_by_id
 
@@ -12,7 +13,7 @@ def get_game_question(room_id):
         raise RoomNotFound('Room ID {} not found'.format(room_id))
 
     current_room = json.loads(get_by_key(room_id))
-    current_users = get_current_users(current_room)
+    current_users = get_current_players(current_room)
     current_round = get_game_round(room_id, current_room)
 
     random_user = select_random_user(room_id, current_room)
@@ -45,14 +46,6 @@ def get_current_questions(room_id, current_room):
         set_content(room_id, current_room)
 
     return current_room['game']['questions']
-
-
-def get_current_users(current_room):
-    host_user = current_room['host_user']
-    users = current_room['game']['users']
-    players = [player for player in users]
-    players.append(host_user)
-    return players
 
 
 def get_game_round(room_id, current_room):
@@ -104,7 +97,7 @@ def update_selected_questions(room_id, selected_question, current_room):
 
 
 def select_random_user(room_id, current_room):
-    all_users = get_current_users(current_room)
+    all_users = get_current_players(current_room)
     selected_users = get_selected_users(room_id, current_room)
     if all_users_already_played(all_users, selected_users):
         current_room['game']['selected_users'] = []
