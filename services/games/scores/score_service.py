@@ -31,7 +31,16 @@ def update_users_score(room_id, current_room, users_score):
     set_content(room_id, current_room)
 
 
+def is_draw_game_from_current_room(current_room):
+    if 'score_by_user' not in current_room:
+        return False
+    return is_draw_game(current_room['score_by_user'])
+
+
 def is_draw_game(current_scores):
+    if current_scores is None or len(current_scores) == 0:
+        return False
+
     highest_score = get_highest_score(current_scores)
     total_times_highest_score = [times_highest_score for times_highest_score in current_scores
                                  if times_highest_score['total_score'] == highest_score]
