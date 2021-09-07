@@ -1,0 +1,39 @@
+Get the game result scores
+---
+tags:
+  - Game API
+parameters:
+  - in: path
+    name: room_id
+    type: string
+    required: true
+responses:
+    '200':
+      description: Successful operation
+      schema:
+        $ref: '#/definitions/GameResultScoreResponse'
+    '404':
+      description: Room not found
+      schema:
+        $ref: '#/definitions/ErrorResponse'
+definitions:
+  GameResultScoreResponse:
+    type: object
+    properties:
+      users:
+        type: array
+        items:
+            $ref: '#/definitions/UserScore'
+      winner:
+        type: object
+        $ref: '#/definitions/UserScore'
+  UserScore:
+    type: object
+    properties:
+      uid:
+        type: string
+      nickanme:
+        type: string
+      total_score:
+        type: number
+        multipleOf: 0.01
