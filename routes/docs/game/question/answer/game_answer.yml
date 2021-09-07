@@ -1,0 +1,70 @@
+Set an answer for a question
+---
+tags:
+  - Game API
+parameters:
+  - in: path
+    name: room_id
+    type: string
+    required: true
+  - in: body
+    name: body
+    schema:
+        required:
+          - selected_user_id
+          - users
+        properties:
+          selected_user_id:
+            type: string
+          users:
+            $ref: '#/definitions/GameAnswerUser'
+    required: true
+responses:
+    '201':
+      description: Successful operation
+      schema:
+        $ref: '#/definitions/GameAnswerResponse'
+    '404':
+      description: Room not found
+      schema:
+        $ref: '#/definitions/ErrorResponse'
+definitions:
+    GameAnswerUser:
+      type: array
+      items:
+            $ref: '#/definitions/AnswerUser'
+    AnswerUser:
+      type: object
+      required:
+        - uid
+        - chosen_answer
+      properties:
+            uid:
+              type: string
+            chosen_answer:
+              type: string
+    ErrorResponse:
+      type: object
+      properties:
+            error:
+              type: string
+            timestamp:
+              type: string
+    GameAnswerResponse:
+      properties:
+        draw:
+          type: boolean
+        end_game:
+          type: boolean
+        type: array
+        users:
+              $ref: '#/definitions/Answer'
+    Answer:
+      type: object
+      properties:
+            uid:
+              type: string
+            correct_answer:
+              type: boolean
+            selected_user:
+              type: boolean
