@@ -8,6 +8,7 @@ from services.rooms.room_service import create_room
 
 from tests.services.rooms.test_room import request_room_body
 
+DEFAULT_USERS_UID = ['8852c5af-a6e5-4fad-9022-3d10ed111a30', 'bbac28f0-5922-4935-9ca7-a313db5ba75a']
 
 def test_success_start_new_game():
     room_id = create_game_room()
@@ -36,5 +37,5 @@ def create_game_room():
 
 
 def request_start_game_body():
-    return {'users': [{'uid': '8852c5af-a6e5-4fad-9022-3d10ed111a30', 'nickname': 'bet64'},
-                      {'uid': 'bbac28f0-5922-4935-9ca7-a313db5ba75a', 'nickname': 'avaii'}]}
+    return {'users': [{'uid': DEFAULT_USERS_UID[0], 'nickname': 'bet64'},
+                      {'uid': DEFAULT_USERS_UID[1], 'nickname': 'avaii'}]}
