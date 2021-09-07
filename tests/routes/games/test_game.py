@@ -8,9 +8,10 @@ import pytest
 
 from main import default_prefix
 from tests.services.games.test_game import request_start_game_body
-from tests.services.rooms.test_room import request_room_body
+from tests.services.rooms.test_room import request_room_body, DEFAULT_SELECTED_USER_UID
 from tests.routes.rooms.test_room import create_game_room
 from tests.services.games.test_game import create_game_room as create_game_room_from_service
+from tests.services.games.questions.answers.test_answer import create_answer_body
 from services.games.game_service import start_new_game
 
 APPLICATION_JSON = 'application/json'
@@ -84,6 +85,46 @@ def test_failure_get_game_question_with_room_not_found(client):
     assert_room_not_found(response, room_id)
 
 
+def test_success_set_answer(client):
+    room_id = create_game_room_from_service()
+    body = request_start_game_body()
+    start_new_game(body, room_id)
+    body = create_answer_body()
+    body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
+
+    response = client.post(default_prefix + '/games/{}/questions/answers'.format(room_id),
+                           data=json.dumps(body),
+                           content_type=APPLICATION_JSON)
+
+    assert response is not None
+    assert response.data
+    assert response.content_type == APPLICATION_JSON
+    assert response.status_code == 201
+
+    response_content = json.loads(response.get_data(as_text=True))
+
+    assert 'draw' in response_content
+    assert 'end_game' in response_content
+    assert 'users' in response_content
+    assert len(response_content['users']) > 0
+
+
+def test_failure_set_answer_with_room_not_found(client):
+    room_id = 'D13G'
+    body = create_answer_body()
+    body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
+
+    response = client.post(default_prefix + '/games/{}/questions/answers'.format(room_id),
+                           data=json.dumps(body),
+                           content_type=APPLICATION_JSON)
+    assert_room_not_found(response, room_id)
+
+
+def test_failure_set_answer_with_required_missing_properties(client):
+    without_selected_user_id(client)
+    without_user_answer(client)
+
+
 def without_users(client):
     game_room_response = create_game_room(client, request_room_body())
 
@@ -151,3 +192,35 @@ def assert_room_not_found(response, room_id):
     assert 'error' in response_content
     assert 'timestamp' in response_content
     assert response_content['error'] == 'Room ID {} not found'.format(room_id)
+
+
+def without_selected_user_id(client):
+    room_id = create_game_room_from_service()
+    body = request_start_game_body()
+    start_new_game(body, room_id)
+    body = create_answer_body()
+
+    key_to_remove = 'selected_user_id'
+    del body[key_to_remove]
+
+    response = client.post(default_prefix + '/games/{}/questions/answers'.format(room_id),
+                           data=json.dumps(body),
+                           content_type=APPLICATION_JSON)
+
+    assert_failure_missing_property(response, key_to_remove)
+
+
+def without_user_answer(client):
+    room_id = create_game_room_from_service()
+    body = request_start_game_body()
+    start_new_game(body, room_id)
+    body = create_answer_body()
+
+    key_to_remove = 'users'
+    del body[key_to_remove]
+
+    response = client.post(default_prefix + '/games/{}/questions/answers'.format(room_id),
+                           data=json.dumps(body),
+                           content_type=APPLICATION_JSON)
+
+    assert_failure_missing_property(response, key_to_remove)
