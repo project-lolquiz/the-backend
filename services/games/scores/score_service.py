@@ -1,5 +1,9 @@
+import json
+
+from components.exception_component import RoomNotFound
 from services.games.players.player_service import get_current_players
-from services.redis_service import set_content
+from services.redis_service import set_content, get_by_key
+from services.rooms.room_service import exists_room_by_id
 
 DEFAULT_SCORE_FACTOR = 10
 
@@ -40,3 +44,23 @@ def get_highest_score(current_scores):
         if user_score['total_score'] > highest_score:
             highest_score = user_score['total_score']
     return highest_score
+
+
+def get_result_score(room_id):
+    if not exists_room_by_id(room_id):
+        raise RoomNotFound('Room ID {} not found'.format(room_id))
+
+    current_room = json.loads(get_by_key(room_id))
+    score_by_user = current_room['game']['score_by_user']
+    winner = get_user_with_highest_score(score_by_user)
+
+    return {'users': score_by_user,
+            'winner': winner}
+
+
+def get_user_with_highest_score(score_by_user):
+    highest_score = get_highest_score(score_by_user)
+    users_with_highest_score = [user for user in score_by_user if user['total_score'] == highest_score]
+    if len(users_with_highest_score) == 1:
+        return users_with_highest_score[0]
+    return None
