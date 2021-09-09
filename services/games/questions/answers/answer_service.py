@@ -15,13 +15,14 @@ def set_answer(room_id, content):
     answer_data = json.loads(json.dumps(content))
     selected_user_id = answer_data['selected_user_id']
     user_answers = answer_data['users']
+    selected_user_answer = get_selected_user_answer(user_answers, selected_user_id)
 
     users_with_right_answer = [user_answer['uid'] for user_answer in user_answers
                                if not is_selected_user(user_answer, selected_user_id)
-                               and is_right_answer(user_answer, selected_user_id)]
+                               and is_right_answer(user_answer, selected_user_answer)]
     users_with_wrong_answer = [user_answer['uid'] for user_answer in user_answers
                                if not is_selected_user(user_answer, selected_user_id)
-                               and not is_right_answer(user_answer, selected_user_id)]
+                               and not is_right_answer(user_answer, selected_user_answer)]
 
     current_room = json.loads(get_by_key(room_id))
     total_score = get_game_total_score(current_room)
@@ -74,12 +75,16 @@ def set_answer(room_id, content):
             'end_game': end_game}
 
 
+def get_selected_user_answer(user_answers, selected_user_uid):
+    return [user for user in user_answers if user['uid'] == selected_user_uid][0]
+
+
 def is_selected_user(user_answer, selected_user_uid):
     return user_answer['uid'] == selected_user_uid
 
 
-def is_right_answer(user_answer, selected_user_uid):
-    return user_answer['chosen_answer'] == selected_user_uid
+def is_right_answer(user_answer, selected_user_answer):
+    return user_answer['chosen_answer'] == selected_user_answer['chosen_answer']
 
 
 def update_user_score(users_answer, score, current_scores, current_users, score_by_users):
