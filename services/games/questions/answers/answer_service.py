@@ -2,7 +2,6 @@ import json
 
 from components.exception_component import RoomNotFound
 from services.games.players.player_service import get_current_players
-from services.games.questions.question_service import get_game_round
 from services.games.scores.score_service import get_game_total_score, get_score_by_users, update_users_score, \
     is_draw_game
 from services.redis_service import get_by_key
