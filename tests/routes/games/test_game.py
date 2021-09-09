@@ -9,6 +9,8 @@ import pytest
 from main import default_prefix
 from services.games.questions.answers.answer_service import set_answer
 from services.games.game_service import start_new_game
+from services.games.questions.question_service import get_game_round
+from services.redis_service import get_by_key
 from tests.services.games.test_game import request_start_game_body
 from tests.services.rooms.test_room import request_room_body, DEFAULT_SELECTED_USER_UID
 from tests.routes.rooms.test_room import create_game_room
@@ -90,6 +92,10 @@ def test_success_set_answer(client):
     room_id = create_game_room_from_service()
     body = request_start_game_body()
     start_new_game(body, room_id)
+
+    current_room = json.loads(get_by_key(room_id))
+    get_game_round(room_id, current_room)
+
     body = create_answer_body()
     body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
 
@@ -130,6 +136,10 @@ def test_success_game_result_score(client):
     room_id = create_game_room_from_service()
     body = request_start_game_body()
     start_new_game(body, room_id)
+
+    current_room = json.loads(get_by_key(room_id))
+    get_game_round(room_id, current_room)
+
     body = create_answer_body()
     body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
     set_answer(room_id, body)

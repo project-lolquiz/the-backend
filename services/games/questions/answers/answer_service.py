@@ -2,7 +2,6 @@ import json
 
 from components.exception_component import RoomNotFound
 from services.games.players.player_service import get_current_players
-from services.games.questions.question_service import get_game_round
 from services.games.scores.score_service import get_game_total_score, get_score_by_users, update_users_score, \
     is_draw_game
 from services.redis_service import get_by_key
@@ -66,7 +65,7 @@ def set_answer(room_id, content):
     current_game_status = set_current_game_status_for_selected_user(selected_user_id, current_game_status)
 
     draw_game = False
-    end_game = is_end_game(room_id, current_room)
+    end_game = is_end_game(current_room)
     if end_game:
         draw_game = is_draw_game(current_scores)
 
@@ -127,6 +126,6 @@ def set_current_game_status_for_selected_user(selected_user_id, current_game_sta
     return current_game_status
 
 
-def is_end_game(room_id, current_room):
-    current_round = get_game_round(room_id, current_room)
+def is_end_game(current_room):
+    current_round = current_room['game']['round']
     return current_round['current'] == current_round['total']
