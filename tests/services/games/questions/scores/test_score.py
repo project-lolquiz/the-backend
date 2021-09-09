@@ -84,6 +84,15 @@ def test_is_draw_game_from_current_room_without_score_by_user_node():
     assert not is_draw_game_from_current_room(current_room)
 
 
+def test_is_draw_game_from_current_room_with_score_by_user_empty_node():
+    room_id = create_game_room()
+    body = request_start_game_body()
+    start_new_game(body, room_id)
+    current_room = json.loads(get_by_key(room_id))
+    current_room['game']['score_by_user'] = []
+    assert not is_draw_game_from_current_room(current_room)
+
+
 def test_is_draw_game_with_current_score_none():
     assert not is_draw_game(None)
 
