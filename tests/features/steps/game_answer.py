@@ -15,12 +15,12 @@ def i_request_to_send_the_answers_with_user_choosing_the_right_choice(context):
 
     users = []
     for row in context.table:
-        user = {'uid': row['uid'],
-                'chosen_answer': row['chosen_answer']}
-        if selected_user_id != row['uid'] and len([right_answer for right_answer in users
-                                                   if right_answer['chosen_answer']]) == 0:
-            user['chosen_answer'] = selected_user_id
-        users.append(user)
+        users.append({'uid': row['uid'],
+                      'chosen_answer': row['chosen_answer']})
+
+    selected_user_answer = [answer for answer in users if answer['uid'] == selected_user_id][0]
+    not_selected_user = [user for user in users if user['uid'] != selected_user_id][0]
+    not_selected_user['chosen_answer'] = selected_user_answer['chosen_answer']
 
     answer_body = {'selected_user_id': selected_user_id,
                    'users': set_only_one_user_with_right_answer(users, selected_user_id)}
@@ -49,7 +49,7 @@ def i_request_to_send_all_the_answers_with_the_right_choice(context):
     users = []
     for row in context.table:
         users.append({'uid': row['uid'],
-                      'chosen_answer': selected_user_id})
+                      'chosen_answer': row['chosen_answer']})
 
     answer_body = {'selected_user_id': selected_user_id,
                    'users': users}
