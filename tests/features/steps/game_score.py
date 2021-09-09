@@ -2,7 +2,7 @@ import json
 
 from behave import *
 from main import default_prefix
-from tests.features.steps.game_answer import set_only_one_user_with_right_answer, set_answer
+from tests.features.steps.game_answer import set_answer
 from tests.features.steps.game_question import i_request_a_new_question
 
 APPLICATION_JSON = 'application/json'
