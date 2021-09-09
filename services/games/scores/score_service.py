@@ -32,9 +32,10 @@ def update_users_score(room_id, current_room, users_score):
 
 
 def is_draw_game_from_current_room(current_room):
-    if 'score_by_user' not in current_room:
+    current_game = current_room['game']
+    if 'score_by_user' not in current_game:
         return False
-    return is_draw_game(current_room['score_by_user'])
+    return is_draw_game(current_game['score_by_user'])
 
 
 def is_draw_game(current_scores):
