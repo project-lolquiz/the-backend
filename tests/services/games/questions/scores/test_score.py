@@ -24,7 +24,6 @@ def test_get_result_score_with_a_winner():
     get_game_round(room_id, current_room)
 
     body = create_answer_body()
-    body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
     set_answer(room_id, body)
 
     result_score = get_result_score(room_id)
@@ -42,6 +41,8 @@ def test_get_result_score_with_selected_user_as_winner():
     get_game_round(room_id, current_room)
 
     body = create_answer_body()
+    body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
+    body['users'][1]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
     set_answer(room_id, body)
 
     result_score = get_result_score(room_id)
@@ -60,8 +61,7 @@ def test_get_result_score_without_a_winner():
     get_game_round(room_id, current_room)
 
     body = create_answer_body()
-    body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
-    body['users'][1]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
+    body['users'][1]['chosen_answer'] = body['users'][0]['chosen_answer']
     set_answer(room_id, body)
 
     result_score = get_result_score(room_id)

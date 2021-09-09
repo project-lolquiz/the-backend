@@ -20,8 +20,10 @@ def i_request_to_send_the_following_question_x_answer_combinations_for_the_round
         answer_by_user = [{'uid': row['uid'],
                            'chosen_answer': row['chosen_answer']}
                           for row in context.table if int(row['round']) == round_num]
-        not_selected_user = [user for user in answer_by_user if user['uid'] != selected_user_id]
-        not_selected_user[0]['chosen_answer'] = selected_user_id
+
+        selected_user_answer = [answer for answer in answer_by_user if answer['uid'] == selected_user_id][0]
+        not_selected_user = [user for user in answer_by_user if user['uid'] != selected_user_id][0]
+        not_selected_user['chosen_answer'] = selected_user_answer['chosen_answer']
 
         answer_body = {'selected_user_id': selected_user_id,
                        'users': answer_by_user}

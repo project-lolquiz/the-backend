@@ -97,7 +97,6 @@ def test_success_set_answer(client):
     get_game_round(room_id, current_room)
 
     body = create_answer_body()
-    body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
 
     response = client.post(default_prefix + '/games/{}/questions/answers'.format(room_id),
                            data=json.dumps(body),
