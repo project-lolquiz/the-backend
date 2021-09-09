@@ -2,8 +2,6 @@ import json
 
 from behave import *
 from main import default_prefix
-from tests.features.steps.rooms import create_new_game_room
-from tests.features.steps.start_game import start_new_game
 
 APPLICATION_JSON = 'application/json'
 
