@@ -19,7 +19,6 @@ def test_set_answer_with_only_one_right_answer():
     start_new_game(body, room_id)
     set_game_round(room_id)
     body = create_answer_body()
-    body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
 
     answer_response = set_answer(room_id, body)
     assert_answer_response(answer_response)
@@ -33,8 +32,7 @@ def test_set_answer_with_all_users_right_answer():
     start_new_game(body, room_id)
     set_game_round(room_id)
     body = create_answer_body()
-    body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
-    body['users'][1]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
+    body['users'][1]['chosen_answer'] = body['users'][0]['chosen_answer']
 
     answer_response = set_answer(room_id, body)
     assert_answer_response(answer_response)
@@ -48,6 +46,8 @@ def test_set_answer_with_all_users_wrong_answer():
     start_new_game(body, room_id)
     set_game_round(room_id)
     body = create_answer_body()
+    body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
+    body['users'][1]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
 
     answer_response = set_answer(room_id, body)
     assert_answer_response(answer_response)
@@ -68,7 +68,6 @@ def test_set_answer_with_only_one_right_answer_for_ended_game():
     start_new_game(body, room_id)
     set_ended_game(room_id)
     body = create_answer_body()
-    body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
 
     answer_response = set_answer(room_id, body)
     assert_answer_response(answer_response)
@@ -83,8 +82,7 @@ def test_set_answer_with_all_users_right_answer_for_ended_and_draw_game():
     start_new_game(body, room_id)
     set_ended_game(room_id)
     body = create_answer_body()
-    body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
-    body['users'][1]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
+    body['users'][1]['chosen_answer'] = body['users'][0]['chosen_answer']
 
     answer_response = set_answer(room_id, body)
     assert_answer_response(answer_response)
@@ -102,7 +100,6 @@ def test_set_answers_with_only_one_right_answer_and_incrementing_scores():
 
     for index in range(0, len(DEFAULT_USERS_UID)):
         body = create_answer_body()
-        body['users'][index]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
 
         answer_response = set_answer(room_id, body)
         assert_answer_response(answer_response)
@@ -144,6 +141,8 @@ def create_answer_body():
     for user in DEFAULT_USERS_UID:
         users.append({'uid': user,
                       'chosen_answer': user})
+    users.append({'uid': DEFAULT_SELECTED_USER_UID,
+                  'chosen_answer': DEFAULT_USERS_UID[0]})
 
     return {'users': users,
             'selected_user_id': DEFAULT_SELECTED_USER_UID}
