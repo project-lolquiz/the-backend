@@ -94,6 +94,22 @@ def test_set_answer_with_all_users_right_answer_for_ended_and_draw_game():
     assert len(users_right_answers) == 2
 
 
+def test_set_answers_with_only_one_right_answer_and_incrementing_scores():
+    room_id = create_game_room()
+    body = request_start_game_body()
+    start_new_game(body, room_id)
+    set_game_round(room_id)
+
+    for index in range(0, len(DEFAULT_USERS_UID)):
+        body = create_answer_body()
+        body['users'][index]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
+
+        answer_response = set_answer(room_id, body)
+        assert_answer_response(answer_response)
+        users_right_answers = [user for user in answer_response['users'] if user['correct_answer']]
+        assert len(users_right_answers) == 1
+
+
 def set_game_round(room_id):
     current_room = json.loads(get_by_key(room_id))
     get_game_round(room_id, current_room)
