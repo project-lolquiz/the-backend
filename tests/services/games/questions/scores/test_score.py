@@ -1,3 +1,4 @@
+import json
 import os
 import pytest
 
@@ -7,6 +8,8 @@ from components.exception_component import RoomNotFound
 from services.games.game_service import start_new_game
 from services.games.questions.answers.answer_service import set_answer
 from services.games.scores.score_service import get_result_score
+from services.games.questions.question_service import get_game_round
+from services.redis_service import get_by_key
 from tests.services.games.questions.answers.test_answer import create_answer_body
 from tests.services.games.test_game import create_game_room, request_start_game_body
 from tests.services.rooms.test_room import DEFAULT_SELECTED_USER_UID
@@ -16,6 +19,10 @@ def test_get_result_score_with_a_winner():
     room_id = create_game_room()
     body = request_start_game_body()
     start_new_game(body, room_id)
+
+    current_room = json.loads(get_by_key(room_id))
+    get_game_round(room_id, current_room)
+
     body = create_answer_body()
     body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
     set_answer(room_id, body)
@@ -30,6 +37,10 @@ def test_get_result_score_with_selected_user_as_winner():
     room_id = create_game_room()
     body = request_start_game_body()
     start_new_game(body, room_id)
+
+    current_room = json.loads(get_by_key(room_id))
+    get_game_round(room_id, current_room)
+
     body = create_answer_body()
     set_answer(room_id, body)
 
@@ -44,6 +55,10 @@ def test_get_result_score_without_a_winner():
     room_id = create_game_room()
     body = request_start_game_body()
     start_new_game(body, room_id)
+
+    current_room = json.loads(get_by_key(room_id))
+    get_game_round(room_id, current_room)
+
     body = create_answer_body()
     body['users'][0]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
     body['users'][1]['chosen_answer'] = DEFAULT_SELECTED_USER_UID
