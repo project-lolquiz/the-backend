@@ -121,7 +121,7 @@ def select_random_question(room_id, current_room):
     selected_questions = get_selected_questions(room_id, current_room)
     if all_questions_already_played(all_questions, selected_questions):
         current_room['game']['selected_questions'] = []
-        selected_question = random.choice([selected_question['id'] for selected_question in all_questions])
+        selected_question = random.choice([selected_question for selected_question in all_questions])
     else:
         selected_question = random.choice([question
                                            for question in all_questions
