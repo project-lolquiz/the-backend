@@ -3,7 +3,7 @@ import pytest
 
 os.environ['ENV'] = 'qa'
 
-from services.games.questions.question_service import get_game_question
+from services.games.questions.question_service import get_game_question, get_current_questions, select_random_question
 from tests.services.games.test_game import create_game_room, request_start_game_body
 
 from services.games.game_service import *
@@ -70,3 +70,25 @@ def test_failure_game_question_with_room_not_found():
 
     with pytest.raises(RoomNotFound, match='Room ID {} not found'.format(room_id)):
         get_game_question(room_id)
+
+
+def test_get_all_random_questions():
+    room_id = create_game_room()
+    body = request_start_game_body()
+    start_new_game(body, room_id)
+
+    current_room = json.loads(get_by_key(room_id))
+    questions_id = set()
+
+    all_questions = get_current_questions(room_id, current_room)
+    total_questions = len(all_questions)
+    for _ in range(0, total_questions):
+        question = select_random_question(room_id, current_room)
+        assert question['id'] not in questions_id
+        questions_id.add(question['id'])
+
+    assert len(questions_id) == total_questions
+
+    # After getting all questions randomly, should get one already selected
+    question = select_random_question(room_id, current_room)
+    assert question['id'] in questions_id
