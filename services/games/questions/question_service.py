@@ -137,7 +137,8 @@ def all_questions_already_played(all_questions, selected_questions):
 
 def set_question_options_with_users(selected_question, current_users):
     if len(selected_question['options']) == 0:
-        selected_question['options'] = [{'title': current_user['uid'],
+        selected_question['options'] = [{'id': current_user['uid'],
+                                         'title': current_user['nickname'],
                                          'description': current_user['nickname']}
                                         for current_user in current_users]
     return selected_question
