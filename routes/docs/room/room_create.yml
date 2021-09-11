@@ -24,8 +24,10 @@ definitions:
       properties:
             game_type:
               type: number
+              description: "The game type id"
             game_mode:
               type: number
+              description: "The game mode id"
             host_user:
               $ref: '#/definitions/HostUser'
             total_rounds:
@@ -43,5 +45,7 @@ definitions:
       properties:
             uid:
               type: string
+              description: "The host user id"
             nickname:
               type: string
+              description: "The host user nickname"

@@ -6,6 +6,7 @@ parameters:
   - in: path
     name: room_id
     type: string
+    description: "The room id"
     required: true
 responses:
     '200':
@@ -22,8 +23,10 @@ definitions:
     properties:
       selected_user_id:
         type: string
+        description: "The selected user id for current round"
       title:
         type: string
+        description: "The question for current round"
       options:
         type: array
         items:
@@ -33,8 +36,10 @@ definitions:
         properties:
           current:
             type: integer
+            description: "The number related to the current round"
           total:
             type: integer
+            description: "The number related to the regular final round"
       draw:
         type: boolean
   Option:
@@ -42,7 +47,10 @@ definitions:
     properties:
       id:
         type: string
+        description: "The option id for current round question"
       title:
         type: string
+        description: "The option title for current round question"
       description:
         type: string
+        description: "The option description for current round question"
