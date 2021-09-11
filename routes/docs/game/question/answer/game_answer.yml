@@ -6,6 +6,7 @@ parameters:
   - in: path
     name: room_id
     type: string
+    description: "The room id"
     required: true
   - in: body
     name: body
@@ -16,6 +17,7 @@ parameters:
       properties:
         selected_user_id:
           type: string
+          description: "The selected user id for current round"
         users:
           $ref: '#/definitions/GameAnswerUser'
     required: true
@@ -41,8 +43,10 @@ definitions:
     properties:
       uid:
         type: string
+        description: "The user id"
       chosen_answer:
         type: string
+        description: "The option id for current round question"
   ErrorResponse:
     type: object
     properties:
@@ -54,8 +58,10 @@ definitions:
     properties:
       draw:
         type: boolean
+        description: "The status indicating whether is or not a drawn game"
       end_game:
         type: boolean
+        description: "The status indicating whether the game reached or not the regular final round"
       users:
         type: array
         items:
@@ -65,7 +71,10 @@ definitions:
     properties:
       uid:
         type: string
+        description: "The user id"
       correct_answer:
         type: boolean
+        description: "The status indicating whether user selected or not the right option for current round question"
       selected_user:
         type: boolean
+        description: "The status indicating whether is or not the selected user for current round"

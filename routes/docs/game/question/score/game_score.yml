@@ -5,6 +5,7 @@ tags:
 parameters:
   - in: path
     name: room_id
+    description: "The room id"
     type: string
     required: true
 responses:
@@ -32,8 +33,11 @@ definitions:
     properties:
       uid:
         type: string
+        description: "The user id"
       nickname:
         type: string
+        description: "The user nickname"
       total_score:
         type: number
         multipleOf: 0.01
+        description: "The total score scored by the user"
