@@ -42,6 +42,7 @@ definitions:
             description: "The number related to the regular final round"
       draw:
         type: boolean
+        description: "The status indicating whether is or not a drawn game"
   Option:
     type: object
     properties:
