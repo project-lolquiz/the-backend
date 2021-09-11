@@ -133,4 +133,4 @@ def set_current_game_status_for_selected_user(selected_user_id, current_game_sta
 
 def is_end_game(current_room):
     current_round = current_room['game']['round']
-    return current_round['current'] == current_round['total']
+    return current_round['current'] >= current_round['total']
