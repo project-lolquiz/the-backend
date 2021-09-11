@@ -3,7 +3,7 @@ import json
 from components.exception_component import RoomNotFound
 from services.games.players.player_service import get_current_players
 from services.games.scores.score_service import get_game_total_score, get_score_by_users, update_users_score, \
-    is_draw_game
+    is_draw_game, DEFAULT_PARTIAL_SCORE_FACTOR
 from services.redis_service import get_by_key
 from services.rooms.room_service import exists_room_by_id
 
@@ -43,7 +43,7 @@ def set_answer(room_id, content):
         selected_user_score = update_selected_user_score(selected_user_id,
                                                          score_by_users,
                                                          current_users,
-                                                         5 * len(users_with_right_answer))
+                                                         DEFAULT_PARTIAL_SCORE_FACTOR * len(users_with_right_answer))
         current_scores.append(selected_user_score)
         current_game_status = set_current_game_status_by_user(users_with_right_answer, True, current_game_status)
     else:

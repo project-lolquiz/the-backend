@@ -6,6 +6,7 @@ from services.redis_service import set_content, get_by_key
 from services.rooms.room_service import exists_room_by_id
 
 DEFAULT_SCORE_FACTOR = 10
+DEFAULT_PARTIAL_SCORE_FACTOR = int(DEFAULT_SCORE_FACTOR / 2)
 
 
 def get_game_total_score(current_room):
