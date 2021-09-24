@@ -30,7 +30,7 @@ def change_host_user(room_id, content):
     current_room = json.loads(get_by_key(room_id))
 
     current_room = remove_host_user_from_users(current_room, host_user)
-    current_room = remove_host_user_from_selected_users(current_room, host_user)
+    current_room = remove_current_host_user_from_selected_users(current_room)
     current_room = set_host_user(current_room, host_user)
     set_content(room_id, current_room)
 
@@ -44,9 +44,10 @@ def remove_host_user_from_users(current_room, host_user):
     return current_room
 
 
-def remove_host_user_from_selected_users(current_room, host_user):
+def remove_current_host_user_from_selected_users(current_room):
     current_selected_users = current_room['game']['selected_users']
-    selected_users = [user for user in current_selected_users if user['uid'] != host_user['uid']]
+    host_user = current_room['host_user']
+    selected_users = [user for user in current_selected_users if user != host_user['uid']]
     current_room['game']['selected_users'] = selected_users
     return current_room
 
