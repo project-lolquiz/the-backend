@@ -1,0 +1,37 @@
+Sets a new host user
+---
+tags:
+  - Game Room API
+parameters:
+  - in: body
+    name: body
+    schema:
+      $ref: '#/definitions/HostUser'
+    required: true
+responses:
+  '204':
+    description: Successful operation
+  '404':
+    description: Room not found
+    schema:
+      $ref: '#/definitions/ErrorResponse'
+definitions:
+  HostUser:
+    type: object
+    required:
+      - uid
+      - nickname
+    properties:
+      uid:
+        type: string
+        description: "The host user id"
+      nickname:
+        type: string
+        description: "The host user nickname"
+  ErrorResponse:
+    type: object
+    properties:
+      error:
+        type: string
+      timestamp:
+        type: string
