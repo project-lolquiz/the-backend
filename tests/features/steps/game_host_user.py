@@ -47,12 +47,19 @@ def there_will_be_only_users_in_the_game(context, total_users):
 
 
 @step("there will be only (\d+) users in the selected users list")
-def there_will_be_only_users_in_the_game(context, total_users):
+def there_will_be_only_users_in_the_selected_users_list(context, total_users):
     current_room = json.loads(get_by_key(context.world.room_id))
     current_game = current_room['game']
     selected_users = current_game['selected_users']
 
     assert len(selected_users) == int(total_users)
+
+
+@step("there will have no selected users list")
+def there_will_have_no_selected_users_list(context):
+    current_room = json.loads(get_by_key(context.world.room_id))
+    current_game = current_room['game']
+    assert 'selected_users' not in current_game
 
 
 @step("the host user is not")
