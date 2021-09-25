@@ -11,6 +11,7 @@ from services.games.questions.answers.answer_service import set_answer
 from services.games.game_service import start_new_game
 from services.games.questions.question_service import get_game_round
 from services.redis_service import get_by_key
+from tests.commons.commons import assert_room_not_found, assert_failure_missing_property
 from tests.services.games.test_game import request_start_game_body
 from tests.services.rooms.test_room import request_room_body, DEFAULT_SELECTED_USER_UID
 from tests.routes.rooms.test_room import create_game_room
@@ -210,28 +211,6 @@ def without_nickname(client):
                            content_type=APPLICATION_JSON)
 
     assert_failure_missing_property(response, 'nickname')
-
-
-def assert_failure_missing_property(response, missing_property):
-    assert response.data
-    assert response.content_type == APPLICATION_JSON
-    assert response.status_code == 400
-
-    response_content = json.loads(response.get_data(as_text=True))
-    assert 'error' in response_content
-    assert 'timestamp' not in response_content
-    assert response_content['error'] == '\'{}\' is a required property'.format(missing_property)
-
-
-def assert_room_not_found(response, room_id):
-    assert response
-    assert response.content_type == APPLICATION_JSON
-    assert response.status_code == 404
-
-    response_content = json.loads(response.get_data(as_text=True))
-    assert 'error' in response_content
-    assert 'timestamp' in response_content
-    assert response_content['error'] == 'Room ID {} not found'.format(room_id)
 
 
 def without_selected_user_id(client):

@@ -3,6 +3,7 @@ from flask import jsonify, Blueprint, request
 from flask_expects_json import expects_json
 
 from services.rooms.room_service import *
+from ..default_route import json_error_message
 from ..schemas.room_schema import *
 
 room_rest = Blueprint('room_rest', __name__)
@@ -21,3 +22,14 @@ def create_game_room():
 def check_exists_room(room_id):
     response = {'exists': exists_room_by_id(room_id)}
     return jsonify(response), 200
+
+
+@room_rest.route('/games/rooms/<string:room_id>/host_user', methods=['put'])
+@expects_json(host_user_schema)
+@swag_from('../docs/room/host_user/host_user.yml')
+def set_host_user(room_id):
+    try:
+        change_host_user(room_id, request.get_json())
+    except RoomNotFound as rnf:
+        return json_error_message(rnf.message), 404
+    return {}, 204
