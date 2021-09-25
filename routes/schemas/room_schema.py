@@ -15,3 +15,12 @@ post_schema = {
     },
     'required': ['game_type', 'game_mode', 'total_rounds']
 }
+
+host_user_schema = {
+    'type': 'object',
+    'properties': {
+        'uid': {'type': 'string'},
+        'nickname': {'type': 'string'}
+    },
+    'required': ['uid', 'nickname']
+}
