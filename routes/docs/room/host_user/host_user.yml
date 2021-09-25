@@ -3,6 +3,11 @@ Sets a new host user
 tags:
   - Game Room API
 parameters:
+  - in: path
+    name: room_id
+    type: string
+    description: "The room id"
+    required: true
   - in: body
     name: body
     schema:
