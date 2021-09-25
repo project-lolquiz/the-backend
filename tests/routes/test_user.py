@@ -1,13 +1,14 @@
 from datetime import datetime
 
 import json
+import main
 
 from unittest import mock
 import pytest
 
-import main
-from components.exception_component import UserAlreadyExists, UserNotFound
 from main import default_prefix
+from components.exception_component import UserAlreadyExists, UserNotFound
+from tests.commons.commons import assert_failure_missing_property
 
 APPLICATION_JSON = 'application/json'
 TEXT_HTML_UTF8 = 'text/html; charset=utf-8'
@@ -269,17 +270,6 @@ def assert_failure_user_register(response_content, error_message):
     assert 'error' in response_content
     assert 'timestamp' in response_content
     assert response_content['error'] == error_message
-
-
-def assert_failure_missing_property(response, missing_property):
-    assert response.data
-    assert response.content_type == APPLICATION_JSON
-    assert response.status_code == 400
-
-    response_content = json.loads(response.get_data(as_text=True))
-    assert 'error' in response_content
-    assert 'timestamp' not in response_content
-    assert response_content['error'] == '\'{}\' is a required property'.format(missing_property)
 
 
 def request_user_body():
