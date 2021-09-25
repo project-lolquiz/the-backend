@@ -45,10 +45,11 @@ def remove_host_user_from_users(current_room, host_user):
 
 
 def remove_current_host_user_from_selected_users(current_room):
-    current_selected_users = current_room['game']['selected_users']
-    host_user = current_room['host_user']
-    selected_users = [user for user in current_selected_users if user != host_user['uid']]
-    current_room['game']['selected_users'] = selected_users
+    if 'selected_users' in current_room['game']:
+        current_selected_users = current_room['game']['selected_users']
+        host_user = current_room['host_user']
+        selected_users = [user for user in current_selected_users if user != host_user['uid']]
+        current_room['game']['selected_users'] = selected_users
     return current_room
 
 
