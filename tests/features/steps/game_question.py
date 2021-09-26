@@ -20,14 +20,14 @@ def i_request_to_create_a_new_room_with(context):
                                       'nickname': row['host_user_nickname']}
         new_game_room['total_rounds'] = int(row['total_rounds'])
     context.world.request_body = new_game_room
-    context.world.response_body = create_new_game_room(context)
+
+    response_body = create_new_game_room(context)
+    response_content = json.loads(response_body.get_data(as_text=True))
+    context.world.room_id = response_content['room_id']
 
 
 @step("I request to start a new game with users")
 def i_request_to_start_a_new_game_with_users(context):
-    response_content = json.loads(context.world.response_body.get_data(as_text=True))
-    context.world.room_id = response_content['room_id']
-
     users = []
     for row in context.table:
         users.append({'uid': row['uid'], 'nickname': row['nickname']})
