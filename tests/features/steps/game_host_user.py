@@ -3,6 +3,7 @@ import json
 from behave import *
 from main import default_prefix
 from services.redis_service import get_by_key, set_content
+from services.rooms.room_service import has_game_users, is_game_started, has_selected_users
 
 APPLICATION_JSON = 'application/json'
 
@@ -38,8 +39,12 @@ def i_request_to_set_the_new_host_user_as(context):
 @step("there will be only (\d+) users in the game")
 def there_will_be_only_users_in_the_game(context, total_users):
     current_room = json.loads(get_by_key(context.world.room_id))
-    current_game = current_room['game']
-    users = current_game['users']
+
+    users = []
+    if has_game_users(current_room):
+        current_game = current_room['game']
+        users = current_game['users']
+
     host_user = current_room['host_user']
     users.append(host_user)
 
@@ -49,8 +54,11 @@ def there_will_be_only_users_in_the_game(context, total_users):
 @step("there will be only (\d+) users in the selected users list")
 def there_will_be_only_users_in_the_selected_users_list(context, total_users):
     current_room = json.loads(get_by_key(context.world.room_id))
-    current_game = current_room['game']
-    selected_users = current_game['selected_users']
+
+    selected_users = []
+    if is_game_started(current_room):
+        current_game = current_room['game']
+        selected_users = current_game['selected_users']
 
     assert len(selected_users) == int(total_users)
 
@@ -58,8 +66,7 @@ def there_will_be_only_users_in_the_selected_users_list(context, total_users):
 @step("there will have no selected users list")
 def there_will_have_no_selected_users_list(context):
     current_room = json.loads(get_by_key(context.world.room_id))
-    current_game = current_room['game']
-    assert 'selected_users' not in current_game
+    assert not has_selected_users(current_room)
 
 
 @step("the host user is not")
