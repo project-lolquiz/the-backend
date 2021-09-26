@@ -38,19 +38,32 @@ def change_host_user(room_id, content):
 
 
 def remove_host_user_from_users(current_room, host_user):
-    current_users = current_room['game']['users']
-    users = [user for user in current_users if user['uid'] != host_user['uid']]
-    current_room['game']['users'] = users
+    if has_game_users(current_room):
+        current_users = current_room['game']['users']
+        users = [user for user in current_users if user['uid'] != host_user['uid']]
+        current_room['game']['users'] = users
     return current_room
 
 
+def has_game_users(current_room):
+    return is_game_started(current_room) and 'users' in current_room['game']
+
+
+def is_game_started(current_room):
+    return 'game' in current_room
+
+
 def remove_current_host_user_from_selected_users(current_room):
-    if 'selected_users' in current_room['game']:
+    if has_selected_users(current_room):
         current_selected_users = current_room['game']['selected_users']
         host_user = current_room['host_user']
         selected_users = [user for user in current_selected_users if user != host_user['uid']]
         current_room['game']['selected_users'] = selected_users
     return current_room
+
+
+def has_selected_users(current_room):
+    return is_game_started(current_room) and 'selected_users' in current_room['game']
 
 
 def set_host_user(current_room, host_user):
