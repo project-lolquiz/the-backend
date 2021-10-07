@@ -7,7 +7,7 @@ game_answer_schema = {
             'items': {
                 'properties': {
                     'uid': {'type': 'string'},
-                    'chosen_answer': {'type': 'string'}
+                    'chosen_answer': {'type': ['string', 'null']}
                 },
                 'required': ['uid', 'chosen_answer']
             }

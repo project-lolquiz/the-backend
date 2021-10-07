@@ -51,7 +51,7 @@ def set_answer(room_id, content):
         updated_user_score = update_selected_user_score(selected_user_id,
                                                         score_by_users,
                                                         current_users,
-                                                        total_score)
+                                                        total_score if has_answer(selected_user_answer) else 0)
         current_scores.append(updated_user_score)
 
     if len(users_with_wrong_answer) > 0:
@@ -84,7 +84,11 @@ def is_selected_user(user_answer, selected_user_uid):
 
 
 def is_right_answer(user_answer, selected_user_answer):
-    return user_answer['chosen_answer'] == selected_user_answer['chosen_answer']
+    return has_answer(user_answer) and user_answer['chosen_answer'] == selected_user_answer['chosen_answer']
+
+
+def has_answer(user_answer):
+    return user_answer['chosen_answer'] is not None
 
 
 def update_user_score(users_answer, score, current_scores, current_users, score_by_users):

@@ -103,6 +103,27 @@ def test_success_set_answer(client):
                            data=json.dumps(body),
                            content_type=APPLICATION_JSON)
 
+    assert_set_answer_response(response)
+
+
+def test_success_without_user_chosen_answer(client):
+    room_id = create_game_room_from_service()
+    body = request_start_game_body()
+    start_new_game(body, room_id)
+
+    current_room = json.loads(get_by_key(room_id))
+    get_game_round(room_id, current_room)
+
+    body = create_answer_body(set_valid_answer=False)
+
+    response = client.post(default_prefix + '/games/{}/questions/answers'.format(room_id),
+                           data=json.dumps(body),
+                           content_type=APPLICATION_JSON)
+
+    assert_set_answer_response(response)
+
+
+def assert_set_answer_response(response):
     assert response is not None
     assert response.data
     assert response.content_type == APPLICATION_JSON
