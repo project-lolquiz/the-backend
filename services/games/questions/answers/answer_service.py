@@ -51,7 +51,7 @@ def set_answer(room_id, content):
         updated_user_score = update_selected_user_score(selected_user_id,
                                                         score_by_users,
                                                         current_users,
-                                                        total_score)
+                                                        total_score if has_answer(selected_user_answer) else 0)
         current_scores.append(updated_user_score)
 
     if len(users_with_wrong_answer) > 0:
