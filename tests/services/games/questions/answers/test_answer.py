@@ -55,6 +55,19 @@ def test_set_answer_with_all_users_wrong_answer():
     assert len(users_right_answers) == 0
 
 
+def test_set_answer_with_no_answers_at_all():
+    room_id = create_game_room()
+    body = request_start_game_body()
+    start_new_game(body, room_id)
+    set_game_round(room_id)
+    body = create_answer_body(set_valid_answer=False)
+
+    answer_response = set_answer(room_id, body)
+    assert_answer_response(answer_response)
+    users_right_answers = [user for user in answer_response['users'] if user['correct_answer']]
+    assert len(users_right_answers) == 0
+
+
 def test_failure_set_answer_with_room_not_found():
     room_id = '1AB3'
 
@@ -136,13 +149,13 @@ def assert_draw_game(answer_response):
     assert answer_response['draw']
 
 
-def create_answer_body():
+def create_answer_body(set_valid_answer=True):
     users = []
     for user in DEFAULT_USERS_UID:
         users.append({'uid': user,
-                      'chosen_answer': user})
+                      'chosen_answer': user if set_valid_answer else None})
     users.append({'uid': DEFAULT_SELECTED_USER_UID,
-                  'chosen_answer': DEFAULT_USERS_UID[0]})
+                  'chosen_answer': DEFAULT_USERS_UID[0] if set_valid_answer else None})
 
     return {'users': users,
             'selected_user_id': DEFAULT_SELECTED_USER_UID}
