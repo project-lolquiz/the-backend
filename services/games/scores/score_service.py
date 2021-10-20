@@ -65,7 +65,7 @@ def get_result_score(room_id):
     score_by_user = current_room['game']['score_by_user']
     winner = get_user_with_highest_score(score_by_user)
 
-    return {'users': sort_by_user_score(score_by_user),
+    return {'users': sort_by_user_score(round_score(score_by_user)),
             'winner': winner}
 
 
@@ -79,3 +79,10 @@ def get_user_with_highest_score(score_by_user):
 
 def sort_by_user_score(score_by_user, reverse=True):
     return sorted(score_by_user, key=lambda k: k['total_score'], reverse=reverse)
+
+
+def round_score(score_by_user):
+    return [{'uid': score['uid'],
+             'nickname': score['nickname'],
+             'total_score': round(score['total_score'], 2)}
+            for score in score_by_user]
