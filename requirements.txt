@@ -35,7 +35,7 @@ psycopg2==2.8.4
 py==1.10.0
 pyparsing==2.4.7
 pyrsistent==0.17.3
-pytest==6.2.1
+pytest==6.2.5
 python-mimeparse==1.6.0
 python-subunit==1.4.0
 PyYAML==5.4
