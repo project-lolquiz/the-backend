@@ -32,7 +32,7 @@ def get_game_question(room_id):
         current_room,
         current_room['game']['round'],
         current_room['game']['selected_users'],
-        current_room['game']['selected_questions']))
+        current_room['selected_questions']))
     return response
 
 
@@ -74,13 +74,11 @@ def get_selected_users(room_id, current_room):
 
 
 def get_selected_questions(room_id, current_room):
-    current_game = current_room['game']
-    if 'selected_questions' not in current_game:
-        current_game['selected_questions'] = []
-        current_room['game'] = current_game
+    if 'selected_questions' not in current_room:
+        current_room['selected_questions'] = []
         set_content(room_id, current_room)
 
-    return current_game['selected_questions']
+    return current_room['selected_questions']
 
 
 def update_selected_users(room_id, selected_user_uid, current_room):
@@ -91,9 +89,7 @@ def update_selected_users(room_id, selected_user_uid, current_room):
 
 
 def update_selected_questions(room_id, selected_question, current_room):
-    current_game = current_room['game']
-    current_game['selected_questions'].append(selected_question['id'])
-    current_room['game'] = current_game
+    current_room['selected_questions'].append(selected_question['id'])
     set_content(room_id, current_room)
 
 
@@ -120,7 +116,7 @@ def select_random_question(room_id, current_room):
     all_questions = get_current_questions(room_id, current_room)
     selected_questions = get_selected_questions(room_id, current_room)
     if all_questions_already_played(all_questions, selected_questions):
-        current_room['game']['selected_questions'] = []
+        current_room['selected_questions'] = []
         selected_question = random.choice([selected_question for selected_question in all_questions])
     else:
         selected_question = random.choice([question
