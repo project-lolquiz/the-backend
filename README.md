@@ -24,6 +24,7 @@ O comando **. ./run.sh** irá:
 ## Atualizando as dependências do projeto
 ```
 > python -m pip install <DEPENDENCIA>[==VERSION]
+> pip install <DEPENDENCIA> --upgrade
 > python -m pip freeze > requirements.txt
 ```
 ## Executando os testes de unidade da aplicação
