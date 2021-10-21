@@ -83,4 +83,5 @@ http://localhost:5000/ping
 ### Endereço no Heroku
 ```
 https://lolquizbe.herokuapp.com/
+https://lolquizbe01.herokuapp.com/
 ```
