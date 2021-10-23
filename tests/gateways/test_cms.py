@@ -1,11 +1,8 @@
-from gateways.cms_gateway import get_questions
+from gateways.cms_gateway import get_questions, valid_question
 
 
 def test_get_questions():
     response = get_questions()
     assert response is not None
-    for question in response:
-        assert 'id' in question
-        assert 'game_type' in question
-        assert 'game_modes' in question
-        assert 'options' in question
+    valid_questions = [valid_question(question) for question in response]
+    assert False not in valid_questions
