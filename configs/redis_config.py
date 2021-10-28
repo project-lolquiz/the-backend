@@ -25,7 +25,7 @@ class ProductionConfig(RedisConfig):
 
     def __init__(self):
         super(ProductionConfig, self).__init__()
-        url = urlparse(os.environ.get('REDIS_URL'))
+        url = urlparse(os.environ.get('REDIS_TLS_URL'))
         self.r = redis.Redis(host=url.hostname, port=url.port, username=url.username, password=url.password,
                              ssl=True,
                              ssl_cert_reqs=None,
