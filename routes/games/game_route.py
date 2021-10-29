@@ -1,5 +1,5 @@
 from flasgger import swag_from
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_expects_json import expects_json
 
 from routes.default_route import json_error_message
@@ -31,6 +31,9 @@ def game_question(room_id):
         return jsonify(get_game_question(room_id)), 200
     except RoomNotFound as rnf:
         return json_error_message(rnf.message), 404
+    except Exception as e:
+        current_app.logger.error(e)
+        return json_error_message(str(e)), 500
 
 
 @game_rest.route('/games/<string:room_id>/questions/answers', methods=['post'])
@@ -41,6 +44,9 @@ def game_answer(room_id):
         return jsonify(set_answer(room_id, request.get_json())), 201
     except RoomNotFound as rnf:
         return json_error_message(rnf.message), 404
+    except Exception as e:
+        current_app.logger.error(e)
+        return json_error_message(str(e)), 500
 
 
 @game_rest.route('/games/<string:room_id>/results/scores', methods=['get'])
@@ -50,3 +56,6 @@ def game_result_score(room_id):
         return jsonify(get_result_score(room_id)), 200
     except RoomNotFound as rnf:
         return json_error_message(rnf.message), 404
+    except Exception as e:
+        current_app.logger.error(e)
+        return json_error_message(str(e)), 500

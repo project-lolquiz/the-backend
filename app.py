@@ -1,12 +1,31 @@
 from flasgger import Swagger
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from logging.config import dictConfig
 
 from configs.db_config import get_connection as db_connection
 from configs.redis_config import get_connection as redis_connection
 
+
 db = SQLAlchemy()
 _redis = redis_connection()
+
+
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s in %(module)s.%(funcName)s[%(lineno)d]: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://flask.logging.wsgi_errors_stream',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'INFO',
+        'handlers': ['wsgi']
+    }
+})
 
 swagger_template = {
     "swagger": "2.0",

@@ -17,6 +17,10 @@ responses:
       description: Room not found
       schema:
         $ref: '#/definitions/ErrorResponse'
+    '500':
+      description: Generic internal server error
+      schema:
+        $ref: '#/definitions/ErrorResponse'
 definitions:
   GameQuestionResponse:
     type: object

@@ -8,7 +8,7 @@ from components.exception_component import RoomNotFound
 os.environ['ENV'] = 'qa'
 
 from services.games.game_service import start_new_game
-from services.redis_service import set_content, get_by_key
+from services.redis_service import set_content
 from services.rooms.room_service import create_room, exists_room_by_id, generate_room_id, change_host_user
 
 DEFAULT_TOTAL_ROUNDS = 10

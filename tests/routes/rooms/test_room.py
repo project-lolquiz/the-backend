@@ -1,5 +1,7 @@
 import os
 
+from unittest import mock
+
 os.environ['ENV'] = 'qa'
 
 import json
@@ -9,7 +11,7 @@ import pytest
 from main import default_prefix
 from services.games.game_service import start_new_game
 from services.redis_service import set_content
-from tests.commons.commons import assert_room_not_found, assert_failure_missing_property
+from tests.commons.commons import assert_room_not_found, assert_failure_missing_property, assert_generic_error
 from tests.services.rooms.test_room import request_room_body, request_start_game_body, request_host_user_body
 
 APPLICATION_JSON = 'application/json'
@@ -84,6 +86,22 @@ def test_failure_set_host_user_with_room_not_found(client):
                           content_type=APPLICATION_JSON)
 
     assert_room_not_found(response, room_id)
+
+
+@mock.patch('routes.rooms.room_route.change_host_user')
+def test_failure_set_host_user_with_generic_exception(mock_service, client):
+    error_message = 'Generic error'
+    mock_service.side_effect = Exception(error_message)
+
+    room_id = 'ZYX1'
+
+    game_start_body = request_start_game_body()
+    json_body = request_host_user_body(game_start_body['users'][0])
+    response = client.put(default_prefix + '/games/rooms/{}/host_user'.format(room_id),
+                          data=json.dumps(json_body),
+                          content_type=APPLICATION_JSON)
+
+    assert_generic_error(response, error_message)
 
 
 def test_failure_set_host_user_with_required_missing_properties(client):
