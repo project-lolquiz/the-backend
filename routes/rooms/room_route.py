@@ -1,5 +1,5 @@
 from flasgger import swag_from
-from flask import jsonify, Blueprint, request
+from flask import jsonify, Blueprint, request, current_app
 from flask_expects_json import expects_json
 
 from services.rooms.room_service import *
@@ -32,4 +32,7 @@ def set_host_user(room_id):
         change_host_user(room_id, request.get_json())
     except RoomNotFound as rnf:
         return json_error_message(rnf.message), 404
+    except Exception as e:
+        current_app.logger.error(e)
+        return json_error_message(str(e)), 500
     return {}, 204

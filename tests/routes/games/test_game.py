@@ -1,4 +1,5 @@
 import os
+from unittest import mock
 
 os.environ['ENV'] = 'qa'
 
@@ -11,7 +12,7 @@ from services.games.questions.answers.answer_service import set_answer
 from services.games.game_service import start_new_game
 from services.games.questions.question_service import get_game_round
 from services.redis_service import get_by_key
-from tests.commons.commons import assert_room_not_found, assert_failure_missing_property
+from tests.commons.commons import assert_room_not_found, assert_failure_missing_property, assert_generic_error
 from tests.services.games.test_game import request_start_game_body
 from tests.services.rooms.test_room import request_room_body, DEFAULT_SELECTED_USER_UID
 from tests.routes.rooms.test_room import create_game_room
@@ -89,6 +90,17 @@ def test_failure_get_game_question_with_room_not_found(client):
     assert_room_not_found(response, room_id)
 
 
+@mock.patch('routes.games.game_route.get_game_question')
+def test_failure_game_question_with_generic_error(mock_service, client):
+    error_message = 'Generic error'
+    mock_service.side_effect = Exception(error_message)
+
+    room_id = 'DEFG'
+    response = client.get(default_prefix + '/games/{}/questions'.format(room_id),
+                          content_type=APPLICATION_JSON)
+    assert_generic_error(response, error_message)
+
+
 def test_success_set_answer(client):
     room_id = create_game_room_from_service()
     body = request_start_game_body()
@@ -104,6 +116,21 @@ def test_success_set_answer(client):
                            content_type=APPLICATION_JSON)
 
     assert_set_answer_response(response)
+
+
+@mock.patch('routes.games.game_route.set_answer')
+def test_failure_game_answer_with_generic_error(mock_service, client):
+    error_message = 'Generic error'
+    mock_service.side_effect = Exception(error_message)
+
+    room_id = create_game_room_from_service()
+    body = create_answer_body()
+
+    response = client.post(default_prefix + '/games/{}/questions/answers'.format(room_id),
+                           data=json.dumps(body),
+                           content_type=APPLICATION_JSON)
+
+    assert_generic_error(response, error_message)
 
 
 def test_success_without_user_chosen_answer(client):
@@ -177,6 +204,17 @@ def test_success_game_result_score(client):
     assert 'users' in response_content
     assert len(response_content['users']) > 0
     assert 'winner' in response_content
+
+
+@mock.patch('routes.games.game_route.get_result_score')
+def test_failure_game_result_score_with_generic_error(mock_service, client):
+    error_message = 'Generic error'
+    mock_service.side_effect = Exception(error_message)
+
+    room_id = 'DEFG'
+    response = client.get(default_prefix + '/games/{}/results/scores'.format(room_id),
+                          content_type=APPLICATION_JSON)
+    assert_generic_error(response, error_message)
 
 
 def test_failure_game_result_score_with_room_not_found(client):
